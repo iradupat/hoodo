@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView profileBtn, createPostBtn;
+    private TextView profileBtn;
+    private Button createPostBtn, messagesBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,9 +19,16 @@ public class MainActivity extends AppCompatActivity {
 
         profileBtn = (TextView) findViewById(R.id.home_profile);
         createPostBtn = (Button) findViewById(R.id.home_create_post);
+        messagesBtn = (Button) findViewById(R.id.home_messages);
 
 
-
+        messagesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent contactsList = new Intent(MainActivity.this, ContactListActivity.class);
+                startActivity(contactsList);
+            }
+        });
         createPostBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

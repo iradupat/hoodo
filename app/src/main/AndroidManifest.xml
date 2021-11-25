@@ -13,6 +13,7 @@
         <activity android:name=".ProfileActivity"/>
         <activity android:name=".PostMenuActivity"/>
         <activity android:name=".CreateEditPostActivity"/>
+        <activity android:name=".ContactListActivity"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

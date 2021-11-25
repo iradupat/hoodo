@@ -11,4 +11,5 @@
     <string name="post_menu_wandering_text">Post a wandering dog</string>
     <string name="edit_create_save_text">Save</string>
     <string name="detail_edit_btn">Edit</string>
+    <string name="contacts_contacts_text">Contacts</string>
 </resources>
