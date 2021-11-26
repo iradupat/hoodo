@@ -6,23 +6,18 @@
     android:layout_height="match_parent"
     android:background="#FAF0F0">
 
-    <View
-        android:id="@+id/view22"
-        android:layout_width="228dp"
-        android:layout_height="39dp"
-        android:layout_marginEnd="92dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="324dp" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/dogImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        android:tooltipText="Choose"
+        app:srcCompat="@drawable/ic_launcher_foreground" >
+    </ImageView>
 
     <EditText
         android:id="@+id/editTextTextPersonName3"
@@ -34,7 +29,7 @@
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="@+id/dogImage" />
 
     <TextView
         android:id="@+id/edit_create_save_btn"
