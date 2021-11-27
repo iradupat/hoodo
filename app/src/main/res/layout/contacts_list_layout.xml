@@ -22,8 +22,8 @@
         android:layout_height="507dp"
         android:padding="40dp"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="24dp"
-        tools:layout_editor_absoluteY="278dp">
+        tools:layout_editor_absoluteX="33dp"
+        tools:layout_editor_absoluteY="208dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:layout_width="237dp"
                 android:layout_height="284dp"
                 tools:layout_editor_absoluteX="-37dp"
-                tools:layout_editor_absoluteY="-2dp" >
+                tools:layout_editor_absoluteY="-2dp">
 
 
             </ListView>
