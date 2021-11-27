@@ -8,14 +8,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
     private TextView profileBtn;
-    private Button createPostBtn, messagesBtn;
+    private Button createPostBtn, messagesBtn, signOutBtn;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        signOutBtn = (Button) findViewById(R.id.btn_signOut);
+
+        signOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
+        });
 
         profileBtn = (TextView) findViewById(R.id.home_profile);
         createPostBtn = (Button) findViewById(R.id.home_create_post);
@@ -44,5 +57,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(profileViewIntent);
             }
         });
+    }
+
+    private void signOut() {
+        firebaseAuth.signOut();
+        finish();
     }
 }

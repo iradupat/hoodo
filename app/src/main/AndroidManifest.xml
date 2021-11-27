@@ -15,8 +15,9 @@
         <activity android:name=".PostMenuActivity"/>
         <activity android:name=".CreateEditPostActivity"/>
         <activity android:name=".ContactListActivity"/>
+        <activity android:name=".MainActivity"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".Signin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
