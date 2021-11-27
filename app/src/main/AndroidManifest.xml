@@ -10,13 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hodoo">
-        <activity android:name=".PostDetailActivity"/>
-        <activity android:name=".ProfileActivity"/>
-        <activity android:name=".PostMenuActivity"/>
-        <activity android:name=".CreateEditPostActivity"/>
-        <activity android:name=".ContactListActivity"/>
+        <activity android:name=".view.PostDetailActivity"/>
+        <activity android:name=".view.ProfileActivity"/>
+        <activity android:name=".view.PostMenuActivity"/>
+        <activity android:name=".view.CreateEditPostActivity"/>
+        <activity android:name=".view.ContactListActivity"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

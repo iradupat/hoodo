@@ -1,4 +1,4 @@
-package com.example.hodoo;
+package com.example.hodoo.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.hodoo.R;
 
 public class MainActivity extends AppCompatActivity {
     private TextView profileBtn;
@@ -44,5 +46,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(profileViewIntent);
             }
         });
+    }
+
+    public void showPost(){
+            System.out.println("Was clicked");
     }
 }

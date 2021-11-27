@@ -1,12 +1,13 @@
-package com.example.hodoo;
+package com.example.hodoo.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.hodoo.R;
 
 public class PostMenuActivity extends AppCompatActivity {
     View wanderingBtn, foundBtn, missingBtn;

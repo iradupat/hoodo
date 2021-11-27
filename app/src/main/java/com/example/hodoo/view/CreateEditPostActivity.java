@@ -1,8 +1,6 @@
-package com.example.hodoo;
+package com.example.hodoo.view;
 
 import android.Manifest;
-import android.content.ContentProvider;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +20,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.hodoo.R;
 
 public class CreateEditPostActivity extends AppCompatActivity {
     TextView saveBtn;
@@ -118,8 +118,13 @@ public class CreateEditPostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 20){
-            Bitmap img = (Bitmap) data.getExtras().get("data");
-            dogImage.setImageBitmap(img);
+            if(data!=null) {
+                Bitmap img = (Bitmap) data.getExtras().get("data");
+
+                dogImage.setImageBitmap(img);
+            }else{
+                Toast.makeText(CreateEditPostActivity.this,"Could you please pic the DOGOO for us!",Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
