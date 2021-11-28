@@ -25,8 +25,16 @@ public class Post {
 
 
     private Post(PostBuilder postBuilder){
-
+        postId = postBuilder.getPostId();
+        image = postBuilder.getImage();
+        description = postBuilder.getDescription();
+        timestamp = postBuilder.getTimestamp();
+        editor = postBuilder.getEditor();
+        status = postBuilder.getStatus();
+        location = postBuilder.getLocation();
+        allowComments = postBuilder.isAllowComments();
     }
+
 
 
     public boolean isAllowComments() {

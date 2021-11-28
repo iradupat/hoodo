@@ -1,5 +1,7 @@
 package com.example.hodoo.model;
 
+import com.example.hodoo.util.CommentBuilder;
+
 import java.util.Date;
 
 public class Comment {
@@ -10,11 +12,11 @@ public class Comment {
     private User author;
     private Post post;
 
-    public Comment(String comment, User author, Post post) {
-        this.comment = comment;
-        this.author = author;
+    public Comment(CommentBuilder builder) {
+        this.comment = builder.getComment();
+        this.author = builder.getAuthor();
         this.timestamp = new Date();
-        this.post = post;
+        this.post = builder.getPost();
     }
 
     public void setPost(Post post){
