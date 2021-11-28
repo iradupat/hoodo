@@ -3,12 +3,34 @@ package com.example.hodoo.controller;
 import com.example.hodoo.model.Comment;
 import com.example.hodoo.model.Message;
 import com.example.hodoo.model.Post;
+import com.example.hodoo.model.PostSuggestion;
 import com.example.hodoo.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
 public abstract class FireBaseProxy {
 
+    private FirebaseAuth firebase;
+
+
+    public FireBaseProxy(){
+        firebase = FirebaseAuth.getInstance();
+    }
+
+    public boolean checkIfSuggestionExist(Post post, User suggestedUser){
+
+        return false;
+    }
+    public void giveSuggestion(PostSuggestion suggestion){
+
+    }
+    public List<PostSuggestion> suggestedPosts(User user){
+        return null;
+    }
+    public int getPostSuggestionCount(){
+        return  0;
+    }
 
     public List<Comment> getComments(Post post){
         return null;
@@ -54,6 +76,7 @@ public abstract class FireBaseProxy {
 
 
     public void addPost(Post post) {
-
+//        firebase
+//
     }
 }

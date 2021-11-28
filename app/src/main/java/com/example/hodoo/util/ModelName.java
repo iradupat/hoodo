@@ -1,5 +1,5 @@
 package com.example.hodoo.util;
 
 public enum ModelName {
-    POST,USER,MESSAGE,COMMENT
+    POST,USER,MESSAGE,COMMENT,POST_SUGGESTION
 }

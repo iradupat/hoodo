@@ -44,6 +44,8 @@ public class IDBuilder{
             ID = generateRandomString()+"-"+fireBaseController.getAllPosts().size();
         } else if(modelName.equals(ModelName.USER)){
             ID = generateRandomString()+"-"+fireBaseController.getUsers().size();
+        }else if(modelName.equals(ModelName.POST_SUGGESTION)){
+            ID = generateRandomString()+"-"+fireBaseController.getPostSuggestionCount();
         }
         return ID;
     }
