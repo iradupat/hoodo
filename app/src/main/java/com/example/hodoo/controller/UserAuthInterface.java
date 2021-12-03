@@ -1,5 +1,10 @@
 package com.example.hodoo.controller;
 
-public interface UserAuthInterface {
+import com.example.hodoo.model.User;
 
+import java.util.List;
+
+public interface UserAuthInterface {
+    public User createUser();
+    public List<User> getUsers();
 }

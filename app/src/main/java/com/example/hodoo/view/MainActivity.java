@@ -8,11 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-<<<<<<< HEAD:app/src/main/java/com/example/hodoo/view/MainActivity.java
+
 import com.example.hodoo.R;
-=======
 import com.google.firebase.auth.FirebaseAuth;
->>>>>>> efb86a3270f014542d493ae1d915fc5fea4b1bba:app/src/main/java/com/example/hodoo/MainActivity.java
 
 public class MainActivity extends AppCompatActivity {
     private TextView profileBtn;
@@ -63,13 +61,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-<<<<<<< HEAD:app/src/main/java/com/example/hodoo/view/MainActivity.java
-    public void showPost(){
-            System.out.println("Was clicked");
-=======
+    public void showPost() {
+        System.out.println("Was clicked");
+    }
     private void signOut() {
         firebaseAuth.signOut();
         finish();
->>>>>>> efb86a3270f014542d493ae1d915fc5fea4b1bba:app/src/main/java/com/example/hodoo/MainActivity.java
     }
 }

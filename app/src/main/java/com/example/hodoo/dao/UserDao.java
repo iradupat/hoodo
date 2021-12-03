@@ -1,8 +1,23 @@
 package com.example.hodoo.dao;
 
 import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+
+import com.example.hodoo.model.User;
+
+import java.util.List;
 
 @Dao
-public class UserDao {
+public interface UserDao {
+
+    @Insert
+    void insert(User user);
+
+    @Query("DELETE FROM user")
+    void deleteAll();
+
+    @Query("SELECT * FROM user")
+    List<User> getAll();
 
 }

@@ -10,7 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hodoo">
-<<<<<<< HEAD
         <activity android:name=".view.PostDetailActivity"/>
         <activity android:name=".view.ProfileActivity"/>
         <activity android:name=".view.PostMenuActivity"/>
@@ -18,16 +17,6 @@
         <activity android:name=".view.ContactListActivity"/>
         <activity
             android:name=".view.MainActivity"
-=======
-        <activity android:name=".PostDetailActivity"/>
-        <activity android:name=".ProfileActivity"/>
-        <activity android:name=".PostMenuActivity"/>
-        <activity android:name=".CreateEditPostActivity"/>
-        <activity android:name=".ContactListActivity"/>
-        <activity android:name=".MainActivity"/>
-        <activity
-            android:name=".view.Signin"
->>>>>>> efb86a3270f014542d493ae1d915fc5fea4b1bba
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

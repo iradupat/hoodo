@@ -25,12 +25,16 @@ public class PostBuilder {
         this.editor = editor;
         allowComments = true;
         timestamp = new Date();
-        postId = IDBuilder.createID(ModelName.POST).buildID();
+        postId = IDBuilder.createID(ModelName.POST).setIDLength(8).buildID();
         if(status.equals(PostStatus.SEEN)){
             addLocation();
         }
+
     }
 
+    public boolean isAllowComments(){
+        return allowComments;
+    }
     public PostBuilder allowComments(boolean allow){
 
         this.allowComments = allow;

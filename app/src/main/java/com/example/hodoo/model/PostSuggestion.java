@@ -1,5 +1,7 @@
 package com.example.hodoo.model;
 
+import com.example.hodoo.util.SuggestionBuilder;
+
 import java.util.Date;
 
 public class PostSuggestion {
@@ -9,6 +11,14 @@ public class PostSuggestion {
     private User suggestingUser;
     private Date timestamp;
 
+
+    public  PostSuggestion(SuggestionBuilder builder){
+        suggestionId = builder.getSuggestionId();
+        post = builder.getPost();
+        suggestedUser = builder.getSuggestedUser();
+        suggestingUser = builder.getSuggestingUser();
+        timestamp = builder.getTimestamp();
+    }
 
     public String getSuggestionId(){
         return suggestionId;
