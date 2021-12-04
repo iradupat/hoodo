@@ -20,9 +20,9 @@
     </ImageView>
 
     <EditText
-        android:id="@+id/editTextTextPersonName3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/edit_create_save_description"
+        android:layout_width="271dp"
+        android:layout_height="81dp"
         android:layout_marginTop="188dp"
         android:ems="10"
         android:inputType="textPersonName"

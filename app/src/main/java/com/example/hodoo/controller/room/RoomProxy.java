@@ -15,4 +15,12 @@ public abstract class RoomProxy {
         User user = db.userDao().getAll().get(0);
         return user;
     }
+    public boolean checkIfUserExist(RoomDB db){
+        User user = db.userDao().getAll().get(0);
+        if(user == null){
+            return  false;
+        }else{
+            return true;
+        }
+    }
 }

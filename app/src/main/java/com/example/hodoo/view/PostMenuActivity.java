@@ -17,7 +17,7 @@ public class PostMenuActivity extends AppCompatActivity {
         setContentView(R.layout.post_menu_layout);
 
         Intent editCreateIntent = new Intent(PostMenuActivity.this, CreateEditPostActivity.class);
-
+        editCreateIntent.putExtra("isEdit", false);
 
         wanderingBtn =  findViewById(R.id.post_menu_wandering_btn);
         foundBtn  =  findViewById(R.id.post_menu_found_btn);
@@ -27,6 +27,7 @@ public class PostMenuActivity extends AppCompatActivity {
         wanderingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                editCreateIntent.putExtra("action",0);
                 startActivity(editCreateIntent);
             }
         });
@@ -34,6 +35,8 @@ public class PostMenuActivity extends AppCompatActivity {
         foundBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                editCreateIntent.putExtra("action",1);
+
                 startActivity(editCreateIntent);
             }
         });
@@ -41,6 +44,8 @@ public class PostMenuActivity extends AppCompatActivity {
         missingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                editCreateIntent.putExtra("action",2);
+
                 startActivity(editCreateIntent);
             }
         });

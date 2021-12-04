@@ -44,6 +44,16 @@ public abstract class FactoryController {
         return null;
     }
 
+
+    public static UserAuthInterface registerUserController(String storage){
+        if(storage.equals("FIREBASE_DB")){
+            return new FireBaseController();
+        }else if(storage.equals("ROOM_DB")){
+            return null;
+        }
+        return null;
+    }
+
     public static StoreUserInterface createStoreUserController(String storage){
         if(storage.equals("FIREBASE_DB")){
             return null;

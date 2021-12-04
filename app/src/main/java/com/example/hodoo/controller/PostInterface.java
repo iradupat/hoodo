@@ -7,5 +7,6 @@ public interface PostInterface {
     public void getPost(PostCallback callBack, String postId);
     public void addPost(Post post);
     public void updatePost(Post post);
+    public void getPostCount(IntCallback callback);
 
 }

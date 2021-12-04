@@ -60,7 +60,11 @@ public class PostBuilder {
     }
 
     public PostBuilder addDescription(String description){
-        this.description = description;
+        if(description==null || description.equals("")){
+            this.description = "";
+        }else {
+            this.description = description;
+        }
         return this;
     }
 

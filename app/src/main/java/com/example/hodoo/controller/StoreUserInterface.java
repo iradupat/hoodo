@@ -6,4 +6,5 @@ import com.example.hodoo.model.User;
 public interface StoreUserInterface {
     public void storeCredentials(User user, RoomDB db);
     public User getCredentials(RoomDB db);
+    public boolean checkIfUserExist(RoomDB db);
 }

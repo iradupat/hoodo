@@ -8,6 +8,8 @@ import com.example.hodoo.controller.MapMessageCallback;
 import com.example.hodoo.controller.PostListCallBack;
 import com.example.hodoo.controller.PostCallback;
 import com.example.hodoo.controller.IntCallback;
+import com.example.hodoo.controller.UserCallback;
+import com.example.hodoo.controller.UserListCallback;
 import com.example.hodoo.model.Comment;
 import com.example.hodoo.model.Message;
 import com.example.hodoo.model.Post;
@@ -148,6 +150,8 @@ public abstract class FireBaseProxy {
         return count[0];
     }
 
+
+
     public void getMessageCount(IntCallback callback){
         DatabaseReference messageRef = firebase.getReference().child("Hoodo").child("messages");
 
@@ -201,17 +205,37 @@ public abstract class FireBaseProxy {
 
 
     }
-
-    public  List<User> getUsers(){
+    public void getUserCount(IntCallback callback){
         DatabaseReference userRef = firebase.getReference().child("Hoodo").child("users");
-        List<User> users = new ArrayList<>();
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+               int count = (int) snapshot.getChildrenCount();
+               callback.onComplete(count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public  void getUsers(UserListCallback callback){
+        DatabaseReference userRef = firebase.getReference().child("Hoodo").child("users");
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<User> users = new ArrayList<>();
                 for(DataSnapshot snapshot1 : snapshot.getChildren() ){
                     User user = snapshot1.getValue(User.class);
+                    if(user.getUserId()==null || user.getUserId().endsWith("0")){
+                        user.setUserId(snapshot1.getKey());
+                    }
                     users.add(user);
                 }
+                callback.onComplete(users);
             }
 
             @Override
@@ -221,14 +245,13 @@ public abstract class FireBaseProxy {
         });
 
 
-        return users;
+
     }
 
-    public User createUser(){
-        User user = new User();
+    public void createUser(User user){
+
         firebase.getReference().child("Hoodo").child("users").push().setValue(user);
 
-        return  user;
     }
 
     public void updatePost(Post post){
@@ -251,7 +274,24 @@ public abstract class FireBaseProxy {
             }
         });
     }
+    public void getPostCount(IntCallback callback){
+        firebase = FirebaseDatabase.getInstance();
 
+        DatabaseReference postsRef = firebase.getReference().child("Hoodo").child("posts");
+        postsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int count = (int)snapshot.getChildrenCount();
+                callback.onComplete(count);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 
     public void  getAllPosts(PostListCallBack callBack) {
         firebase = FirebaseDatabase.getInstance();
@@ -263,9 +303,9 @@ public abstract class FireBaseProxy {
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
 //                    System.out.println(snapshot1.getKey());
                     Post post = snapshot1.getValue(Post.class);
-                    if(post.getPostId().endsWith("0") || post.getPostId() == null){
-                        post.setPostId(snapshot1.getKey());
-                    }
+//                    if(post.getPostId().endsWith("0") || post.getPostId() == null){
+//                        post.setPostId(snapshot1.getKey());
+//                    }
                     posts.add(post);
                 }
                 callBack.onComplete(posts);
