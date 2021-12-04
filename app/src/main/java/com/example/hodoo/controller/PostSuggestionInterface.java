@@ -10,6 +10,6 @@ public interface PostSuggestionInterface {
 
     public void giveSuggestion(PostSuggestion suggestion);
     public List<PostSuggestion> suggestedPosts(User user);
-    public int getPostSuggestionCount();
-    public boolean checkIfSuggestionExist(Post post, User suggestedUser);
+    public void getPostSuggestionCount(IntCallback callback);
+    public void checkIfSuggestionExist(BooleanCallBack callBack, Post post, User suggestedUser);
 }

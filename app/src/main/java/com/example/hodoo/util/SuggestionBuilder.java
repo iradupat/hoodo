@@ -1,7 +1,6 @@
 package com.example.hodoo.util;
 
-import com.example.hodoo.controller.FireBaseController;
-import com.example.hodoo.controller.FireBaseProxy;
+import com.example.hodoo.controller.firebase.FireBaseController;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostSuggestion;
 import com.example.hodoo.model.User;
@@ -22,13 +21,12 @@ public class SuggestionBuilder {
         post = postIn;
         suggestedUser = suggestedUserIn;
         suggestingUser = suggestingUserIn;
-        suggestionId = IDBuilder.createID(ModelName.POST_SUGGESTION).buildID();
         fireBaseController = new FireBaseController();
     }
 
-    public PostSuggestion buildSuggestion(){
+    public PostSuggestion buildSuggestion(boolean exist){
 
-        if(checkIfSuggestionExist()){
+        if(exist){
             return null;
         }
         PostSuggestion suggestion = new PostSuggestion(this);
@@ -36,11 +34,10 @@ public class SuggestionBuilder {
 
     }
 
-    public  boolean checkIfSuggestionExist(){
-        if(fireBaseController.checkIfSuggestionExist(this.post, this.suggestedUser)){
-            return true;
-        }
-        return false;
+
+    public SuggestionBuilder addPostId(int lastCount){
+        suggestionId = IDBuilder.createID(lastCount).buildID();
+        return this;
     }
 
     public String getSuggestionId() {

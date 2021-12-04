@@ -1,5 +1,6 @@
 package com.example.hodoo.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Dao;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -11,12 +12,13 @@ import com.example.hodoo.util.NameBuilder;
 @Entity(tableName = "user")
 public class User {
     @PrimaryKey
+    @NonNull
     private String userId;
     private String userName;
 
-
-    public User(){
-        userId = IDBuilder.createID(ModelName.USER).buildID();
+    public User(){}
+    public User(int lastCount){
+        userId = IDBuilder.createID(lastCount).buildID();
         userName = NameBuilder.createRandomName().allUpperCase().buildName();
     }
 

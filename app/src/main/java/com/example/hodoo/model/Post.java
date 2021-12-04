@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Post {
     private String postId;
-    private Uri image;
+    private String image;
     private String description;
     private Date timestamp;
     private User editor;
@@ -23,8 +23,8 @@ public class Post {
 
     private boolean allowComments;
 
-
-    private Post(PostBuilder postBuilder){
+    public Post(){}
+    public Post(PostBuilder postBuilder){
         postId = postBuilder.getPostId();
         image = postBuilder.getImage();
         description = postBuilder.getDescription();
@@ -36,7 +36,9 @@ public class Post {
     }
 
 
-
+    public void setPostId(String postIdIn){
+        postId = postIdIn;
+    }
     public boolean isAllowComments() {
         return allowComments;
     }
@@ -53,12 +55,12 @@ public class Post {
         return  timestamp;
     }
 
-    public Uri getImage() {
+    public String getImage() {
         return image;
     }
 
 
-    public void setImage(Uri image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -94,4 +96,18 @@ public class Post {
         this.location = location;
     }
 
+    public String getFormattedDate(){
+        SimpleDateFormat DateFor = new SimpleDateFormat("dd/MM/yyyy");
+        return  DateFor.format(timestamp);
+
+    }
+
+    public String toString(){
+        if(status.equals(PostStatus.SEEN)){
+            return description+" : "+location+" - "+getFormattedDate();
+        }else{
+            return description+" : "+getFormattedDate();
+
+        }
+    }
 }

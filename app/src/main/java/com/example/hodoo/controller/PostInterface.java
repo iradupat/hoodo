@@ -2,11 +2,9 @@ package com.example.hodoo.controller;
 
 import com.example.hodoo.model.Post;
 
-import java.util.List;
-
 public interface PostInterface {
-    public Post getPost(String postId);
-    public List<Post> getAllPosts();
+    public void  getAllPosts(PostListCallBack callBack);
+    public void getPost(PostCallback callBack, String postId);
     public void addPost(Post post);
     public void updatePost(Post post);
 

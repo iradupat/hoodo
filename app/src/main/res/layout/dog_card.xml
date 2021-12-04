@@ -21,7 +21,7 @@
         android:layout_margin="10dp"
         >
         <ImageView
-            android:id="@+id/img"
+            android:id="@+id/dog_card_img"
             android:layout_width="90dp"
             app:cardCornerRadius="20dp"
 
@@ -32,17 +32,30 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:layout_width="112dp"
-            android:layout_height="29dp"
-            android:layout_marginStart="40dp"
-            android:text="@string/app_name"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:id="@+id/dog_card_desc"
+            android:layout_width="216dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="56dp"
+            android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/img"
-            tools:layout_editor_absoluteY="0dp"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toEndOf="@+id/dog_card_img"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/dog_card_status"
+            android:layout_width="160dp"
+            android:layout_height="21dp"
+            android:text="Found"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.158"
+            app:layout_constraintStart_toEndOf="@+id/dog_card_img"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.231" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

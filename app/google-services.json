@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "258396452795",
-    "firebase_url": "https://hoodo-10ab3-default-rtdb.firebaseio.com",
-    "project_id": "hoodo-10ab3",
-    "storage_bucket": "hoodo-10ab3.appspot.com"
+    "project_number": "102825335433",
+    "project_id": "hoodo-cmu",
+    "storage_bucket": "hoodo-cmu.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:258396452795:android:77cdbde7c6f8102eec769e",
+        "mobilesdk_app_id": "1:102825335433:android:54c5c768b8f8c0d21b8458",
         "android_client_info": {
           "package_name": "com.example.hodoo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "258396452795-iefg30tho0a6vpk93tncccls35pi369u.apps.googleusercontent.com",
+          "client_id": "102825335433-9ruiiv73rnklabb2k9iid8all4ntsd51.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hodoo",
+            "certificate_hash": "7098edf1f093bb92f086e3ad8f249836723eb73d"
+          }
+        },
+        {
+          "client_id": "102825335433-r25jg7v81n99jh0l8gcnpq6cbrhskjqb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDeBHmJZ-z2d9qEam3YooifnirKdc1siG0"
+          "current_key": "AIzaSyAwhfkIjgD1LEUtVOlmI6lI4ZbGxvmRy_I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "258396452795-iefg30tho0a6vpk93tncccls35pi369u.apps.googleusercontent.com",
+              "client_id": "102825335433-r25jg7v81n99jh0l8gcnpq6cbrhskjqb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
