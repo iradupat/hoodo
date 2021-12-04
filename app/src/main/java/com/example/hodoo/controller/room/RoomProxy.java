@@ -3,6 +3,8 @@ package com.example.hodoo.controller.room;
 import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.User;
 
+import java.util.List;
+
 public abstract class RoomProxy {
 
 
@@ -16,8 +18,9 @@ public abstract class RoomProxy {
         return user;
     }
     public boolean checkIfUserExist(RoomDB db){
-        User user = db.userDao().getAll().get(0);
-        if(user == null){
+        List<User> users = db.userDao().getAll();
+
+        if(users.size()==0){
             return  false;
         }else{
             return true;

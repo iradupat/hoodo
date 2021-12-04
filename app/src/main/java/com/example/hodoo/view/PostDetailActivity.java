@@ -16,6 +16,7 @@ import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.controller.PostCallback;
 import com.example.hodoo.controller.PostInterface;
 import com.example.hodoo.model.Post;
+import com.example.hodoo.util.UserLocation;
 
 public class PostDetailActivity  extends AppCompatActivity {
 
@@ -25,6 +26,9 @@ public class PostDetailActivity  extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_detail_layout);
+
+
+        System.out.println(new UserLocation(this).getLocationName()+"\n\n\nThe location of the user");
 
         controller = FactoryController.createPostController("FIREBASE_DB");
         String postId = getIntent().getExtras().get("postId").toString();

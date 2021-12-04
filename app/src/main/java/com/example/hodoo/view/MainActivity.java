@@ -26,6 +26,7 @@ import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
 import com.example.hodoo.util.PostBuilder;
+import com.example.hodoo.util.UserLocation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         controller = FactoryController.createPostController("FIREBASE_DB");
         roomDbStoreUser = FactoryController.createStoreUserController("ROOM_DB");
         db = RoomDB.getInstance(this);
+
 
 
         // create user or load user ID
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadUserData(){
         // check if ther is a user in the local DB
-        if(roomDbStoreUser.checkIfUserExist(db)){
+        if(roomDbStoreUser.checkIfUserExist(db) == true){
             user = roomDbStoreUser.getCredentials(db);
         }else{
             // create an account if not
