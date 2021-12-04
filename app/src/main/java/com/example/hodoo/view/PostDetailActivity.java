@@ -46,7 +46,7 @@ public class PostDetailActivity  extends AppCompatActivity {
                 }else{
 
                 }
-                startActivity(gotoEditPostIntent);
+//                startActivity(gotoEditPostIntent);
             }
         });
 

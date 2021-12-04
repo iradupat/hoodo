@@ -164,7 +164,7 @@ public class CreateEditPostActivity extends AppCompatActivity {
                 img.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), img, "dog", null);
                 imageUri = Uri.parse(path);
-                System.out.println(imageUri+" The image is here");
+//                System.out.println(imageUri+" The image is here");
                 dogImage.setImageBitmap(img);
             }else{
                 Toast.makeText(CreateEditPostActivity.this,"Could you please pic the DOGOO for us!",Toast.LENGTH_LONG).show();

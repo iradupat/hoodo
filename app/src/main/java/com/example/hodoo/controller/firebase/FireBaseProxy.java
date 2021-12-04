@@ -248,11 +248,11 @@ public abstract class FireBaseProxy {
 
     }
 
-    public void createUser(User user){
+    public User createUser(User user){
         String id = firebase.getReference().child("Hoodo").child("users").push().getKey();
         user.setUserId(id);
         firebase.getReference().child("Hoodo").child("users").push().setValue(user);
-
+        return user;
     }
 
     public void updatePost(Post post){
@@ -313,11 +313,12 @@ public abstract class FireBaseProxy {
 
     public void  getAllPosts(PostListCallBack callBack) {
         firebase = FirebaseDatabase.getInstance();
-        List<Post> posts = new ArrayList<>();
+
         DatabaseReference postsRef = firebase.getReference().child("Hoodo").child("posts");
         postsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Post> posts = new ArrayList<>();
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
 //                    System.out.println(snapshot1.getKey());
                     Post post = snapshot1.getValue(Post.class);

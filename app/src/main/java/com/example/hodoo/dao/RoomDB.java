@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.hodoo.model.User;
 
-@Database(entities = {User.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class}, version = 2, exportSchema = false)
 public abstract class RoomDB extends RoomDatabase {
     private static  RoomDB instance;
     public abstract  UserDao userDao();

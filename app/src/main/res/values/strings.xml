@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Hodoo</string>
     <string name="home_profile">Profile</string>
-    <string name="home_create_post">Create Post</string>
+    <string name="home_create_post_txt">Create Post</string>
     <string name="home_messages">Messages</string>
     <string name="home_search">Search</string>
-    <string name="home_all_posts">All Posts</string>
+    <string name="home_all_posts_txt">All Posts</string>
     <string name="profile_save">Save</string>
     <string name="post_menu_missing_text">Post a missing dog</string>
     <string name="post_menu_found_text">Post a found dog</string>

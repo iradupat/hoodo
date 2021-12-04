@@ -2,10 +2,17 @@ package com.example.hodoo.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +46,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -53,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private StoreUserInterface roomDbStoreUser;
     private RoomDB db;
     private User user;
+    private RecyclerView recyclerView;
+    private int langCode= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,32 +75,64 @@ public class MainActivity extends AppCompatActivity {
         db = RoomDB.getInstance(this);
 
 
-
         // create user or load user ID
         loadUserData();
-      System.out.println(new UserLocation(this).getLocationName());
 
         // load all the posts
 
-        LinearLayout layout = ((LinearLayout)findViewById(R.id.home_list_posts));
+        System.out.println(user.getLanguage()+"    \n\n\n    hello  see the language above \n\n "+user.getUserId());
 
         controller.getAllPosts(new PostListCallBack() {
+
             @Override
             public void onComplete(List<Post> posts) {
+//                LinearLayout layout = ((LinearLayout)findViewById(R.id.home_list_posts));
+                recyclerView = findViewById(R.id.home_list_posts);
 
-                for(Post p : posts){
+                PostAdapter adapter = new PostAdapter(MainActivity.this,posts);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                recyclerView.setAdapter(adapter);
 
-                    listPost(p, layout);
-
-                }
+//                for(Post p : posts){
+//
+//                    listPost(p, layout);
+//
+//                }
             }
         });
 
 
+        ImageView flag = (ImageView)findViewById(R.id.home_lang);
         profileBtn = (TextView) findViewById(R.id.home_profile);
         createPostBtn = (Button) findViewById(R.id.home_create_post);
         messagesBtn = (Button) findViewById(R.id.home_messages);
 
+        if(user.getLanguage().equals("fr")){
+            int imageResource = getResources().getIdentifier("@drawable/france", null, getPackageName());
+
+            Drawable res = getResources().getDrawable(imageResource);
+            flag.setImageDrawable(res);
+        }else{
+
+            int imageResource = getResources().getIdentifier("@drawable/uk", null, getPackageName());
+
+            Drawable res = getResources().getDrawable(imageResource);
+            flag.setImageDrawable(res);
+        }
+
+        flag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(user.getLanguage().equals("fr")) {
+
+                    changeLanguage("en", flag);
+                }else{
+
+                    changeLanguage("fr", flag);
+
+                }
+            }
+        });
 
         messagesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,19 +162,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void changeLanguage(String lng, ImageView flag){
+
+        if(lng.toLowerCase().equals("fr")){
+            int imageResource = getResources().getIdentifier("@drawable/france", null, getPackageName());
+            user.setLanguage("fr");
+            Drawable res = getResources().getDrawable(imageResource);
+            flag.setImageDrawable(res);
+        }else{
+            int imageResource = getResources().getIdentifier("@drawable/uk", null, getPackageName());
+            user.setLanguage("en");
+            Drawable res = getResources().getDrawable(imageResource);
+            flag.setImageDrawable(res);
+        }
+        roomDbStoreUser.updateUser(db,user.getUserId(), user.getLanguage());
+//        roomDbStoreUser.storeCredentials(user, db);
+        Resources rs = getResources();
+        DisplayMetrics met = rs.getDisplayMetrics();
+        Configuration conf = rs.getConfiguration();
+        conf.setLocale(new Locale(lng.toLowerCase()));
+        rs.updateConfiguration(conf, met);
+        Intent intent = getIntent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        startActivity(intent);
+    }
+
     public void loadUserData(){
         // check if ther is a user in the local DB
         if(roomDbStoreUser.checkIfUserExist(db)){
             user = roomDbStoreUser.getCredentials(db);
         }else{
+            System.out.println(new UserLocation(this).getLocationName());
+
             // create an account if not
 
             user = new User(12);
-            userController.createUser(user);
+            user.setLanguage("en");
+            user = userController.createUser(user);
             roomDbStoreUser.storeCredentials(user, db);
         }
     }
 
+
+//    public void displayPosts(List<Post> posts){
+//
+//    }
 
     public void listPost(Post post, LinearLayout layoutScroll){
         try{

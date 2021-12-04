@@ -39,17 +39,15 @@ public class FirebaseStorageUtil {
 
         String imgUrl = null;
         StorageReference ref = storageRef.child("dog/"+today);
-        storageRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        ref.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                Uri url = taskSnapshot.getMetadata().;
-                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         System.out.println(uri);
                         pd.dismiss();
                         callback.onImageUploaded(uri.toString());
-                        //Do what you want with the url
                         Toast.makeText(context, "Post created",Toast.LENGTH_LONG).show();
 
                     }});

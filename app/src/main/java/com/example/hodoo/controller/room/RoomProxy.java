@@ -17,6 +17,10 @@ public abstract class RoomProxy {
         User user = db.userDao().getAll().get(0);
         return user;
     }
+
+    public void updateUser(RoomDB db, String userId, String lang){
+        db.userDao().update(userId, lang);
+    }
     public boolean checkIfUserExist(RoomDB db){
         List<User> users = db.userDao().getAll();
 
