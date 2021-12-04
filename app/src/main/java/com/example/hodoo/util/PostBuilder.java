@@ -63,7 +63,14 @@ public class PostBuilder {
 
     public PostBuilder addDescription(String description){
         if(description==null || description.equals("")){
-            this.description = "";
+            if(this.status.equals(PostStatus.FOUND)){
+                this.description = "I found this dog!";
+
+            }else if(this.status.equals(PostStatus.LOST)){
+                this.description = "I Lost My dog!";
+            }else{
+                this.description = "";
+            }
         }else {
             this.description = description;
         }

@@ -1,5 +1,6 @@
 package com.example.hodoo.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -31,7 +32,10 @@ import com.example.hodoo.model.User;
 import com.example.hodoo.util.PostBuilder;
 import com.example.hodoo.util.UserLocation;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         // create user or load user ID
         loadUserData();
+      System.out.println(new UserLocation(this).getLocationName());
 
         // load all the posts
 
@@ -73,11 +78,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(List<Post> posts) {
 
-
-
-               layout.removeViews(0,layout.getChildCount());
-                layout.removeAllViews();
                 for(Post p : posts){
+
                     listPost(p, layout);
 
                 }
@@ -120,18 +122,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadUserData(){
         // check if ther is a user in the local DB
-        if(roomDbStoreUser.checkIfUserExist(db) == true){
+        if(roomDbStoreUser.checkIfUserExist(db)){
             user = roomDbStoreUser.getCredentials(db);
         }else{
             // create an account if not
-            userController.getUserCount(new IntCallback() {
-                @Override
-                public void onComplete(int value) {
-                    user = new User(value);
-                    userController.createUser(user);
-                    roomDbStoreUser.storeCredentials(user, db);
-                }
-            });
+
+            user = new User(12);
+            userController.createUser(user);
+            roomDbStoreUser.storeCredentials(user, db);
         }
     }
 

@@ -249,13 +249,31 @@ public abstract class FireBaseProxy {
     }
 
     public void createUser(User user){
-
+        String id = firebase.getReference().child("Hoodo").child("users").push().getKey();
+        user.setUserId(id);
         firebase.getReference().child("Hoodo").child("users").push().setValue(user);
 
     }
 
     public void updatePost(Post post){
 
+        firebase.getReference().child("Hoodo").child("posts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshot1: snapshot.getChildren() ) {
+                    Post foundPost = snapshot1.getValue(Post.class);
+                    if(foundPost.getPostId().equals(post.getPostId())){
+                        snapshot1.getRef().removeValue();
+                        addPost(post);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void getPost(PostCallback callBack, String postId) {
@@ -320,6 +338,8 @@ public abstract class FireBaseProxy {
 
 
     public void addPost(Post post) {
+        String id = firebase.getReference().child("Hoodo").child("posts").push().getKey();
+        post.setPostId(id);
         firebase.getReference().child("Hoodo").child("posts").push().setValue(post, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
