@@ -21,9 +21,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.hodoo.R;
 import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.controller.IntCallback;
+import com.example.hodoo.controller.PostCallback;
 import com.example.hodoo.controller.PostInterface;
 import com.example.hodoo.controller.StoreUserInterface;
 import com.example.hodoo.controller.UserAuthInterface;
@@ -87,7 +89,18 @@ public class CreateEditPostActivity extends AppCompatActivity {
 //                    }
 //                });
 
+        if(isEdit){
+            String postId = getIntent().getExtras().get("postId").toString();
+            postController.getPost(new PostCallback() {
+                @Override
+                public void onComplete(Post post) {
+                    Glide.with(CreateEditPostActivity.this).load(post.getImage()).into(dogImage);
+                    descriptionText.setText((CharSequence) post.getDescription());
+//                    Toast.makeText(CreateEditPostActivity.this,"Yes it is here", Toast.LENGTH_LONG).show();
+                }
+            }, postId);
 
+        }
 
 
         dogImage.setOnClickListener(new View.OnClickListener() {
@@ -180,24 +193,17 @@ public class CreateEditPostActivity extends AppCompatActivity {
 
         if(chosenStatus == 0){
 
-            postController.getPostCount(new IntCallback() {
+            post = new PostBuilder(imageUri.toString(), PostStatus.SEEN, user).addLocation(CreateEditPostActivity.this)
+                    .addPostId(10).addDescription(descriptionText.getText().toString()).buildPost();
+            new FirebaseStorageUtil().uploadImage(new ImageCallback() {
                 @Override
-                public void onComplete(int value) {
-                    post = new PostBuilder(imageUri.toString(), PostStatus.SEEN, user)
-                            .addPostId(10).addDescription(descriptionText.getText().toString()).buildPost();
-                    new FirebaseStorageUtil().uploadImage(new ImageCallback() {
-                        @Override
-                        public void onImageUploaded(String url) {
-                            post.setImage(url);
-                            postController.addPost(post);
-                        }
-                    },imageUri, CreateEditPostActivity.this);
-//                    Intent postDetailIntent = new Intent(CreateEditPostActivity.this, PostDetailActivity.class);
-//                    postDetailIntent.putExtra("postId",post.getPostId());
-//                    startActivity(postDetailIntent);
-
+                public void onImageUploaded(String url) {
+                    post.setImage(url);
+                    postController.addPost(post);
                 }
-            });
+            },imageUri, CreateEditPostActivity.this);
+            Intent postDetailIntent = new Intent(CreateEditPostActivity.this, MainActivity.class);
+            startActivity(postDetailIntent);
 
         }else if(chosenStatus == 1){
 

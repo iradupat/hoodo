@@ -2,12 +2,15 @@ package com.example.hodoo.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 
@@ -63,11 +66,19 @@ public class MainActivity extends AppCompatActivity {
         loadUserData();
 
         // load all the posts
+
+        LinearLayout layout = ((LinearLayout)findViewById(R.id.home_list_posts));
+
         controller.getAllPosts(new PostListCallBack() {
             @Override
             public void onComplete(List<Post> posts) {
+
+
+
+               layout.removeViews(0,layout.getChildCount());
+                layout.removeAllViews();
                 for(Post p : posts){
-                    listPost(p);
+                    listPost(p, layout);
 
                 }
             }
@@ -124,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void listPost(Post post){
+
+    public void listPost(Post post, LinearLayout layoutScroll){
         try{
         View layout = getLayoutInflater().inflate(R.layout.dog_card, null, false);
         ImageView img = layout.findViewById(R.id.dog_card_img);
@@ -142,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(postDetailsIntent);
             }
         });
-        ((LinearLayout)findViewById(R.id.home_list_posts)).addView(layout);
-
+//        ((LinearLayout)findViewById(R.id.home_list_posts)).addView(layout);
+            layoutScroll.addView(layout);
         }catch (Exception e){
 
         }
