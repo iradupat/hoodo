@@ -16,12 +16,22 @@ public class User {
     private String userId;
     private String userName;
     private String language;
+    private String token;
+
 
 
     public User(){}
     public User(int lastCount){
         userId = IDBuilder.createID(lastCount).buildID();
         userName = NameBuilder.createRandomName().allUpperCase().buildName();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public void  setLanguage(String lang){

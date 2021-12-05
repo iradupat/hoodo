@@ -22,9 +22,10 @@
     <string name="edit_create_description">"Say something "</string>
     <string name="channel_name">channel Name</string>
     <string name="channel_description">channel description</string>
+    <string name="msg_token_fmt">\"Hello friends\"</string>
 
 
-=======
+    =======
 >>>>>>> parent of 017fd8e (some fixes)
 =======
 >>>>>>> parent of 017fd8e (some fixes)

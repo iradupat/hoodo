@@ -40,11 +40,15 @@ import com.example.hodoo.model.User;
 import com.example.hodoo.util.Notification;
 import com.example.hodoo.util.PostBuilder;
 import com.example.hodoo.util.UserLocation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        Notification.showNotification(this, "Hello ", "Hello friends");
 
         // load all the posts
 
@@ -220,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             Drawable res = getResources().getDrawable(imageResource);
             flag.setImageDrawable(res);
         }
-        Notification.showNotification(this, "Hello", "Hello friends");
+
         roomDbStoreUser.updateUser(db,user);
 //        roomDbStoreUser.storeCredentials(user, db);
         switchLang(lng);
@@ -236,6 +241,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadUserData(){
+
+
+
+
+
         // check if ther is a user in the local DB
         if(roomDbStoreUser.checkIfUserExist(db)){
             user = roomDbStoreUser.getCredentials(db);
@@ -248,7 +258,12 @@ public class MainActivity extends AppCompatActivity {
             user.setLanguage("en");
             user = userController.createUser(user);
             roomDbStoreUser.storeCredentials(user, db);
+
         }
+
+
+        // Log and toast
+
         switchLang(user.getLanguage());
     }
 
