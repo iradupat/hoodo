@@ -15,6 +15,8 @@ public class User {
     @NonNull
     private String userId;
     private String userName;
+    private String language;
+
 
     public User(){}
     public User(int lastCount){
@@ -22,6 +24,13 @@ public class User {
         userName = NameBuilder.createRandomName().allUpperCase().buildName();
     }
 
+    public void  setLanguage(String lang){
+        language = lang;
+    }
+
+    public String getLanguage(){
+        return language;
+    }
     public String getUserId() {
         return userId;
     }

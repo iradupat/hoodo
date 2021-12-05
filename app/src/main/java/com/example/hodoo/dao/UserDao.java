@@ -3,6 +3,7 @@ package com.example.hodoo.dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.hodoo.model.User;
 
@@ -20,4 +21,6 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     List<User> getAll();
 
+    @Update
+    void update(User user);
 }

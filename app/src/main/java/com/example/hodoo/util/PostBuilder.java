@@ -5,6 +5,7 @@ package com.example.hodoo.util;
  * A custom builder for the Post
  */
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.example.hodoo.controller.IntCallback;
@@ -33,7 +34,7 @@ public class PostBuilder {
         allowComments = true;
         timestamp = new Date();
         if(status.equals(PostStatus.SEEN)){
-            addLocation();
+//            addLocation();
         }
 
     }
@@ -54,14 +55,22 @@ public class PostBuilder {
        return this;
     }
 
-    public void addLocation(){
+    public PostBuilder addLocation(Context context){
          // call a class to locate the user here
-
+        location = new UserLocation(context).getLocationName();
+        return this;
     }
 
     public PostBuilder addDescription(String description){
         if(description==null || description.equals("")){
-            this.description = "";
+            if(this.status.equals(PostStatus.FOUND)){
+                this.description = "I found this dog!";
+
+            }else if(this.status.equals(PostStatus.LOST)){
+                this.description = "I Lost My dog!";
+            }else{
+                this.description = "";
+            }
         }else {
             this.description = description;
         }

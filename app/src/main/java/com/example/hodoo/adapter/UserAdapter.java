@@ -55,7 +55,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
         View view = LayoutInflater.from(context).inflate(R.layout.layoutofusers, parent, false);
         return new MyHolder(view);
 
-
     }
 
     @Override
@@ -64,11 +63,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
         User user = userlist.get(position);
 
         friendid = user.getUserId();
-
-
         holder.username.setText(user.getUserName());
-
-
         holder.imageView.setImageResource(R.drawable.user);
 
 
@@ -80,12 +75,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
             holder.image_on.setVisibility(View.VISIBLE);
             holder.image_off.setVisibility(View.GONE);
 
-
         } else {
 
             holder.image_on.setVisibility(View.GONE);
             holder.image_off.setVisibility(View.GONE);
-
 
         }
 
@@ -97,8 +90,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
             holder.last_msg.setVisibility(View.GONE);
         }
-
-
 
     }
 
@@ -168,8 +159,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
                             thelastmessage = chat.getMessage();
                         }
-
-
 
 
                     }

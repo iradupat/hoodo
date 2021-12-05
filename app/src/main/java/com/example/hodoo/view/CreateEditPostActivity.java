@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.hodoo.R;
 import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.controller.IntCallback;
+import com.example.hodoo.controller.PostCallback;
 import com.example.hodoo.controller.PostInterface;
 import com.example.hodoo.controller.StoreUserInterface;
 import com.example.hodoo.controller.UserAuthInterface;
@@ -43,9 +46,9 @@ public class CreateEditPostActivity extends AppCompatActivity {
    private Uri imageUri = null;
 
    private  ActivityResultLauncher<Intent> someActivityResultLauncher;
-   private boolean isEdit;
+   private boolean isEdit, afterEdit=false;
    private User user;
-   private Post post;
+   private Post postEdit;
    private RoomDB db;
    private PostInterface postController;
    private StoreUserInterface roomUserController;
@@ -73,22 +76,6 @@ public class CreateEditPostActivity extends AppCompatActivity {
         dogImage = findViewById(R.id.dogImage);
         descriptionText = findViewById(R.id.edit_create_save_description);
 
-//        someActivityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == CreateEditPostActivity.RESULT_OK) {
-//                            // There are no request codes
-//                            Intent data = result.getData();
-////                            doSomeOperations();
-//                            dogImage.setImageURI(imageUri);
-//                        }
-//                    }
-//                });
-
-
-
 
         dogImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,23 +98,39 @@ public class CreateEditPostActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createPost();
-
+                if(isEdit){
+                    editPost();
+                }else {
+                    createPost();
+                }
             }
         });
+
+
+        if(isEdit){
+
+            String postId= getIntent().getExtras().get("postId").toString();
+
+            postController.getPost(new PostCallback() {
+                @Override
+                public void onComplete(Post post) {
+                    Glide.with(CreateEditPostActivity.this).load(post.getImage()).into(dogImage);
+                    dogImage.setImageURI(Uri.parse(post.getImage()));
+                    descriptionText.setText((CharSequence) post.getDescription());
+                    postEdit = post;
+//                    Toast.makeText(CreateEditPostActivity.this,"Yes it is here", Toast.LENGTH_LONG).show();
+                }
+            }, postId);
+
+        }
     }
 
     private void useCamera(){
-//        ContentValues values = new ContentValues();
-//        values.put(MediaStore.Images.Media.TITLE, "PIC THE DOGOO");
-//        values.put(MediaStore.Images.Media.DESCRIPTION, "PIC THE DOGOO");
-//        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+
         Intent imageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //        imageIntent.putExtra(MediaStore., imageIntent);
         startActivityForResult(imageIntent, 20);
 
-
-//        someActivityResultLauncher.launch(imageIntent);
 
 
     }
@@ -161,7 +164,7 @@ public class CreateEditPostActivity extends AppCompatActivity {
                 img.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), img, "dog", null);
                 imageUri = Uri.parse(path);
-                System.out.println(imageUri+" The image is here");
+//                System.out.println(imageUri+" The image is here");
                 dogImage.setImageBitmap(img);
             }else{
                 Toast.makeText(CreateEditPostActivity.this,"Could you please pic the DOGOO for us!",Toast.LENGTH_LONG).show();
@@ -169,7 +172,51 @@ public class CreateEditPostActivity extends AppCompatActivity {
         }
     }
 
+    public void editPost(){
+//        String path = dogImage.getTag().toString();
+//        imageUri = Uri.parse(path);
 
+//        if(imageUri==null){
+//            Toast.makeText(this,"Take a picture of the dog first!", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+
+        if(chosenStatus == 0){
+
+            postEdit.setStatus(PostStatus.SEEN);
+
+        }else if(chosenStatus == 1){
+            postEdit.setStatus(PostStatus.FOUND);
+        }else if(chosenStatus == 2){
+            postEdit.setStatus(PostStatus.LOST);
+        }
+
+        isEdit = false;
+        if(imageUri==null){
+            postController.updatePost(postEdit);
+        }else {
+            new FirebaseStorageUtil().uploadImage(new ImageCallback() {
+                @Override
+                public void onImageUploaded(String url) {
+                    postEdit.setImage(url);
+//                    postController.updatePost(postEdit);
+                }
+            }, imageUri, CreateEditPostActivity.this);
+        }
+
+
+
+        Intent postDetailIntent = new Intent(CreateEditPostActivity.this, MainActivity.class);
+        startActivity(postDetailIntent);
+
+
+
+
+
+
+
+
+    }
 
     public void createPost(){
 
@@ -180,29 +227,28 @@ public class CreateEditPostActivity extends AppCompatActivity {
 
         if(chosenStatus == 0){
 
-            postController.getPostCount(new IntCallback() {
-                @Override
-                public void onComplete(int value) {
-                    post = new PostBuilder(imageUri.toString(), PostStatus.SEEN, user)
-                            .addPostId(10).addDescription(descriptionText.getText().toString()).buildPost();
-                    new FirebaseStorageUtil().uploadImage(new ImageCallback() {
-                        @Override
-                        public void onImageUploaded(String url) {
-                            post.setImage(url);
-                            postController.addPost(post);
-                        }
-                    },imageUri, CreateEditPostActivity.this);
-//                    Intent postDetailIntent = new Intent(CreateEditPostActivity.this, PostDetailActivity.class);
-//                    postDetailIntent.putExtra("postId",post.getPostId());
-//                    startActivity(postDetailIntent);
+            postEdit = new PostBuilder(imageUri.toString(), PostStatus.SEEN, user).addLocation(CreateEditPostActivity.this)
+                    .addPostId(10).addDescription(descriptionText.getText().toString()).buildPost();
 
-                }
-            });
 
         }else if(chosenStatus == 1){
+            postEdit = new PostBuilder(imageUri.toString(), PostStatus.FOUND, user)
+                    .addPostId(12).addDescription(descriptionText.getText().toString()).buildPost();
 
         }else if(chosenStatus == 2){
-
+            postEdit = new PostBuilder(imageUri.toString(), PostStatus.LOST, user)
+                    .addPostId(12).addDescription(descriptionText.getText().toString()).buildPost();
         }
+
+        new FirebaseStorageUtil().uploadImage(new ImageCallback() {
+            @Override
+            public void onImageUploaded(String url) {
+                postEdit.setImage(url);
+                postController.addPost(postEdit);
+            }
+        },imageUri, CreateEditPostActivity.this);
+
+        Intent postDetailIntent = new Intent(CreateEditPostActivity.this, MainActivity.class);
+        startActivity(postDetailIntent);
     }
 }

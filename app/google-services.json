@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "102825335433",
+    "firebase_url": "https://hoodo-cmu-default-rtdb.firebaseio.com",
     "project_id": "hoodo-cmu",
     "storage_bucket": "hoodo-cmu.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "102825335433-04jpnmhosi18uogba9se2o3de35lvo46.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hodoo",
+            "certificate_hash": "b75f7d5b8691427bc160f66025e539b58ccb66db"
+          }
+        },
         {
           "client_id": "102825335433-9ruiiv73rnklabb2k9iid8all4ntsd51.apps.googleusercontent.com",
           "client_type": 1,

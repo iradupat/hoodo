@@ -16,6 +16,7 @@ public class Message {
         this.message = message;
     }
 
+
     public Date getTimestamp() {
         return timestamp;
     }

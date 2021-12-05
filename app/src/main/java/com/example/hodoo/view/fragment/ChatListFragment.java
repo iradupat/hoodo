@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.hodoo.R;
 import com.example.hodoo.adapter.UserAdapter;
 import com.example.hodoo.controller.FactoryController;
+import com.example.hodoo.controller.UserAuthInterface;
 import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.User;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,9 +35,12 @@ public class ChatListFragment extends Fragment {
     UserAdapter mAdapter;
     private User currentUser;
     private RoomDB roomDB;
+    private UserAuthInterface userController;
 
     public ChatListFragment() {
         // Required empty public constructor
+
+        userController = FactoryController.registerUserController("FIREBASE_DB");
         roomDB = RoomDB.getInstance(getContext());
         currentUser = FactoryController.createStoreUserController("ROOM_DB").getCredentials(roomDB);
     }
@@ -60,7 +64,8 @@ public class ChatListFragment extends Fragment {
 
         usersList = new ArrayList<>();
 
-        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference().child("Hoodo").child("Users");
+
+        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference().child("Hoodo").child("users_two");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,7 +100,7 @@ public class ChatListFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("From Chat :"+error);
+                System.out.println("From Chat : "+error);
             }
         });
 

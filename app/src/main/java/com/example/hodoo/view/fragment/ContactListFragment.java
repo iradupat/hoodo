@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.hodoo.R;
 import com.example.hodoo.adapter.UserAdapter;
 import com.example.hodoo.controller.FactoryController;
+import com.example.hodoo.controller.UserAuthInterface;
 import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.User;
 import com.google.firebase.database.DataSnapshot;
@@ -33,9 +34,11 @@ public class ContactListFragment extends Fragment {
     UserAdapter mAdapter;
     private User currentUser;
     private RoomDB roomDB;
+    private UserAuthInterface userController;
 
     public ContactListFragment() {
         // Required empty public constructor
+        userController = FactoryController.registerUserController("FIREBASE_DB");
         roomDB = RoomDB.getInstance(getContext());
         currentUser = FactoryController.createStoreUserController("ROOM_DB").getCredentials(roomDB);
     }
@@ -59,7 +62,7 @@ public class ContactListFragment extends Fragment {
 
         usersList = new ArrayList<>();
 
-        DatabaseReference reference  =FirebaseDatabase.getInstance().getReference().child("Hoodo").child("Users"); FirebaseDatabase.getInstance().getReference("User");
+        DatabaseReference reference  =FirebaseDatabase.getInstance().getReference().child("Hoodo").child("users_two");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -71,22 +74,10 @@ public class ContactListFragment extends Fragment {
                     User user = ds.getValue(User.class);
 
                     if (!user.getUserId().equals(currentUser.getUserId())) {
-
-
                         usersList.add(user);
-
                     }
-
-
                     mAdapter  = new UserAdapter(getContext(), usersList, false);
                     recyclerView.setAdapter(mAdapter);
-
-
-
-
-
-
-
 
                 }
 
@@ -94,14 +85,9 @@ public class ContactListFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println(error);
+                System.out.println("From Contact : "+error);
             }
         });
-
-
-
-
-
 
     }
 }
