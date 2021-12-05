@@ -239,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
         // check if ther is a user in the local DB
         if(roomDbStoreUser.checkIfUserExist(db)){
             user = roomDbStoreUser.getCredentials(db);
+            System.out.println("From if :"+user);
         }else{
             System.out.println(new UserLocation(this).getLocationName());
 
@@ -248,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
             user.setLanguage("en");
             user = userController.createUser(user);
             roomDbStoreUser.storeCredentials(user, db);
+            System.out.println("From else :"+user);
         }
         switchLang(user.getLanguage());
     }
