@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("TAG",FirebaseMessageReceiver.getToken(this));
 
         userController = FactoryController.registerUserController("FIREBASE_DB");
         controller = FactoryController.createPostController("FIREBASE_DB");
