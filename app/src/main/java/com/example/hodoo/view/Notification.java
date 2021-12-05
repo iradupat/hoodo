@@ -1,4 +1,4 @@
-package com.example.hodoo.util;
+package com.example.hodoo.view;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
@@ -16,11 +16,11 @@ import com.example.hodoo.R;
 import com.example.hodoo.view.MainActivity;
 
 public class Notification {
-    private Context context;
-
-    public Notification(Context context){
-        this.context = context;
-    }
+//    private Context context;
+//
+//    public Notification(Context context){
+//        this.context = context;
+//    }
 
     public static void showNotification(Context context,String title, String bigText) {
 //        Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ context.getPackageName() + "/" + R.mysound);

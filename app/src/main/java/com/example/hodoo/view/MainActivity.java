@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("TAG",FirebaseMessageReceiver.getToken(this));
+//        Log.d("TAG",FirebaseMessageReceiver.getToken(this));
 
         userController = FactoryController.registerUserController("FIREBASE_DB");
         controller = FactoryController.createPostController("FIREBASE_DB");
@@ -145,6 +145,11 @@ public class MainActivity extends AppCompatActivity {
         messagesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Notification.showNotification(
+                        MainActivity.this,
+                        "Hoodo",
+                        "Hey"
+                );
                 Intent contactsList = new Intent(MainActivity.this, ContactListActivity.class);
                 startActivity(contactsList);
             }

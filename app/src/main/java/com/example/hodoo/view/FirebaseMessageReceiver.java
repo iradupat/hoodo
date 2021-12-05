@@ -15,7 +15,7 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 
 import com.example.hodoo.R;
-import com.example.hodoo.util.Notification;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -33,7 +33,7 @@ import com.google.firebase.messaging.RemoteMessage;
         onMessageReceived(RemoteMessage remoteMessage) {
             super.onMessageReceived(remoteMessage);
             if (remoteMessage.getNotification() != null) {
-                new Notification(this);
+//                new Notification(this);
                 Notification.showNotification(
                         this,
                         remoteMessage.getNotification().getTitle(),
