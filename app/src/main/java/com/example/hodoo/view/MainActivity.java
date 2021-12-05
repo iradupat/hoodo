@@ -28,6 +28,7 @@ import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.controller.IntCallback;
 import com.example.hodoo.controller.PostInterface;
 import com.example.hodoo.controller.PostListCallBack;
+import com.example.hodoo.controller.PostSuggestionInterface;
 import com.example.hodoo.controller.StoreUserInterface;
 import com.example.hodoo.controller.UserAuthInterface;
 import com.example.hodoo.controller.firebase.FireBaseController;
@@ -54,12 +55,13 @@ import java.util.Locale;
  *
  */
 public class MainActivity extends AppCompatActivity {
-    private TextView profileBtn;
+    private TextView profileBtn, allButton, suggestedBtn;
     private Button createPostBtn, messagesBtn, signOutBtn;
     private PostInterface controller;
     private UserAuthInterface userController;
     private StoreUserInterface roomDbStoreUser;
     private RoomDB db;
+    private PostSuggestionInterface suggestionInterface;
     private User user;
     private RecyclerView recyclerView;
     private int langCode= 0;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         controller = FactoryController.createPostController("FIREBASE_DB");
         roomDbStoreUser = FactoryController.createStoreUserController("ROOM_DB");
         db = RoomDB.getInstance(this);
-
+        suggestionInterface = FactoryController.createPostSuggestionController("FIREBASE_DB");
 
         // create user or load user ID
         loadUserData();
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // load all the posts
+
 
 
         controller.getAllPosts(new PostListCallBack() {
@@ -98,10 +101,40 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+
+
         ImageView flag = (ImageView)findViewById(R.id.home_lang);
         profileBtn = (TextView) findViewById(R.id.home_profile);
         createPostBtn = (Button) findViewById(R.id.home_create_post);
         messagesBtn = (Button) findViewById(R.id.home_messages);
+        allButton = findViewById(R.id.home_all_posts);
+        suggestedBtn = findViewById(R.id.home_suggested);
+
+        allButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.getAllPosts(new PostListCallBack() {
+
+                    @Override
+                    public void onComplete(List<Post> posts) {
+//                LinearLayout layout = ((LinearLayout)findViewById(R.id.home_list_posts));
+                        displayPosts(posts);
+
+                    }
+                });
+
+            }
+        });
+
+        suggestedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                suggestionInterface.suggestedPosts(posts -> {
+                    displayPosts(posts);
+                }, user);
+            }
+        });
 
         if(user.getLanguage().equals("fr")){
             changeLanguage("fr", flag);
@@ -160,6 +193,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(profileViewIntent);
             }
         });
+    }
+
+    private void displayPosts(List<Post> posts) {
+        recyclerView = findViewById(R.id.home_list_posts);
+
+        PostAdapter adapter = new PostAdapter(MainActivity.this,posts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setAdapter(adapter);
+
     }
 
 

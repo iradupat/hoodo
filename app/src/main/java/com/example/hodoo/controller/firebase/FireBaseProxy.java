@@ -76,10 +76,11 @@ public abstract class FireBaseProxy {
                 List<Post> suggestions = new ArrayList<>();
                 for(DataSnapshot snapshot1: snapshot.getChildren()){
                     PostSuggestion suggestion = snapshot1.getValue(PostSuggestion.class);
-                    if(suggestion.getSuggestedUser().equals(user)){
+                    if(suggestion.getSuggestedUser().getUserId().equals(user.getUserId())){
                         suggestions.add(suggestion.getPost());
                     }
                 }
+                callBack.onComplete(suggestions);
             }
 
             @Override
