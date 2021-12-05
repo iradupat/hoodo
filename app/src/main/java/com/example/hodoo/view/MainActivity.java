@@ -37,6 +37,7 @@ import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
+import com.example.hodoo.util.Notification;
 import com.example.hodoo.util.PostBuilder;
 import com.example.hodoo.util.UserLocation;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         // create user or load user ID
         loadUserData();
+
 
         setContentView(R.layout.activity_main);
 
@@ -218,14 +220,19 @@ public class MainActivity extends AppCompatActivity {
             Drawable res = getResources().getDrawable(imageResource);
             flag.setImageDrawable(res);
         }
+        Notification.showNotification(this, "Hello", "Hello friends");
         roomDbStoreUser.updateUser(db,user);
 //        roomDbStoreUser.storeCredentials(user, db);
+        switchLang(lng);
+
+    }
+
+    public void switchLang(String lng){
         Resources rs = getResources();
         DisplayMetrics met = rs.getDisplayMetrics();
         Configuration conf = rs.getConfiguration();
         conf.setLocale(new Locale(lng.toLowerCase()));
         rs.updateConfiguration(conf, met);
-
     }
 
     public void loadUserData(){
@@ -244,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
             roomDbStoreUser.storeCredentials(user, db);
             System.out.println("From else :"+user);
         }
+        switchLang(user.getLanguage());
     }
 
 

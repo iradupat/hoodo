@@ -15,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hodoo">
+
         <activity
             android:name=".view.MessageActivity"
             android:parentActivityName=".view.ContactListActivity"
@@ -30,7 +31,7 @@
             android:parentActivityName=".view.MainActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.Signin"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
