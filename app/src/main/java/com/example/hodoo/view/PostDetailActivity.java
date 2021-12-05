@@ -25,8 +25,10 @@ import com.example.hodoo.util.UserLocation;
 public class PostDetailActivity  extends AppCompatActivity {
     private TextView editBtn, post_detail_connect;
     private PostInterface controller;
-
+    private User user;
+    private RoomDB db;
     private Post thePost;
+    private StoreUserInterface roomUserController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +36,9 @@ public class PostDetailActivity  extends AppCompatActivity {
         setContentView(R.layout.post_detail_layout);
         editBtn = findViewById(R.id.detail_edit_btn);
         post_detail_connect = findViewById(R.id.post_detail_connect);
+        db = RoomDB.getInstance(this);
+        roomUserController = FactoryController.createStoreUserController("ROOM_DB");
+        user = roomUserController.getCredentials(db);
 
 
 
@@ -47,14 +52,6 @@ public class PostDetailActivity  extends AppCompatActivity {
                 startActivity(goToSuggest);
             }
         });
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//                startActivity(gotoEditPostIntent);
-            }
-        });
-
 
         controller = FactoryController.createPostController("FIREBASE_DB");
         String postId = getIntent().getExtras().get("postId").toString();
@@ -76,7 +73,11 @@ public class PostDetailActivity  extends AppCompatActivity {
                     @Override
                     public void onComplete(Post post) {
                         thePost = post;
-                        updateStatus(post);
+                        if(user.getUserName().equalsIgnoreCase(post.getEditor().getUserName()))
+                        {
+                            updateStatus(post);
+                        }
+
 
                     }
                 }, postId);
@@ -89,6 +90,7 @@ public class PostDetailActivity  extends AppCompatActivity {
     public void mapPost(Post post){
         try{
 
+            editBtn = findViewById(R.id.detail_edit_btn);
             ImageView img = findViewById(R.id.post_detail_img);
             TextView author = findViewById(R.id.post_detail_author);
             TextView postStatus = findViewById(R.id.post_detail_status);
@@ -101,6 +103,11 @@ public class PostDetailActivity  extends AppCompatActivity {
             postDescription.setText(post.getDescription().toUpperCase());
             Glide.with(this).load(post.getImage()).into(img);
 
+            if (post.getStatus().equals(PostStatus.RETURNED))
+            {
+                editBtn.setText("DOG "+post.getStatus().toString()+"!");
+            }
+
         }catch (Exception e){
 
         }
@@ -111,10 +118,16 @@ public class PostDetailActivity  extends AppCompatActivity {
     public void updateStatus(Post post){
         try{
 
-            editBtn = findViewById(R.id.detail_edit_btn);
-            post.setStatus(PostStatus.RETURNED);
-            controller.updatePost(post);
-            editBtn.setText(post.getStatus().toString()+"!");
+
+            if (!post.getStatus().equals(PostStatus.RETURNED))
+            {
+                editBtn = findViewById(R.id.detail_edit_btn);
+                post.setStatus(PostStatus.RETURNED);
+                controller.updatePost(post);
+                editBtn.setText("DOG "+post.getStatus().toString()+"!");
+            }
+
+
 
 
         }catch (Exception e){
