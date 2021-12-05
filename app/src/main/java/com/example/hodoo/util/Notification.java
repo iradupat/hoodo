@@ -1,4 +1,4 @@
-package com.example.hodoo.view;
+package com.example.hodoo.util;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;

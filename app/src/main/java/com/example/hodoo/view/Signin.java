@@ -17,37 +17,26 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Signin extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth;
-    private Button signInBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
-        firebaseAuth = FirebaseAuth.getInstance();
 
-        signInBtn = (Button) findViewById(R.id.btn_signIn);
-
-        signInBtn.setOnClickListener(new View.OnClickListener() {
+        // could be used to load data before the app starts
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
-                anonymousAuth();
-            }
-        });
-    }
-
-    private void anonymousAuth() {
-        firebaseAuth.signInAnonymously().addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 startActivity(new Intent(Signin.this, MainActivity.class));
             }
-        })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Log.e("TAG", "failed sign");
-                    }
-                });
+        }).start();
     }
+
+
 }
