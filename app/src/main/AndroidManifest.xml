@@ -26,6 +26,7 @@
         <activity android:name=".view.ProfileActivity" />
         <activity android:name=".view.PostMenuActivity" />
         <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.SuggestActivity" />
         <activity android:name=".view.CreateEditPostActivity" />
         <activity
             android:name=".view.ContactListActivity"
