@@ -1,7 +1,7 @@
 package com.example.hodoo.model;
 
 public enum PostStatus {
-    SEEN("Wandering"),FOUND("Found"),DEAD("Dead"),LOST("Lost"), RETURNED("RETURNED") ;
+    SEEN("Wandering"),FOUND("Found"),DEAD("Dead"),LOST("Lost"),RETURNED("Returned");
     private   String text;
     PostStatus(String textIn){
         text = textIn;

@@ -29,6 +29,12 @@
             android:name=".view.ContactListActivity"
             android:parentActivityName=".view.MainActivity"
             android:theme="@style/AppThemeNoActionBar" />
+        <activity android:name=".view.PostDetailActivity"/>
+        <activity android:name=".view.SuggestActivity"/>
+        <activity android:name=".view.ProfileActivity"/>
+        <activity android:name=".view.PostMenuActivity"/>
+        <activity android:name=".view.CreateEditPostActivity"/>
+        <activity android:name=".view.ContactListActivity"/>
         <activity
             android:name=".view.MainActivity"
             android:exported="true">

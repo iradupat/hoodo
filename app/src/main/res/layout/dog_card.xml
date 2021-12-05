@@ -33,7 +33,7 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/dog_card_desc"
+            android:id="@+id/connect_username"
             android:layout_width="216dp"
             android:layout_height="32dp"
             android:layout_marginStart="16dp"
@@ -46,7 +46,7 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/dog_card_status"
+            android:id="@+id/connect_connect"
             android:layout_width="160dp"
             android:layout_height="21dp"
             android:text="Found"

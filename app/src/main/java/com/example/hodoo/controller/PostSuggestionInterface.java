@@ -9,7 +9,7 @@ import java.util.List;
 public interface PostSuggestionInterface {
 
     public void giveSuggestion(PostSuggestion suggestion);
-    public List<PostSuggestion> suggestedPosts(User user);
+    public void suggestedPosts(PostListCallBack callBack, User user);
     public void getPostSuggestionCount(IntCallback callback);
     public void checkIfSuggestionExist(BooleanCallBack callBack, Post post, User suggestedUser);
 }

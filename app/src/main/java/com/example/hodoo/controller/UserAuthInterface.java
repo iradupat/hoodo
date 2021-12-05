@@ -8,6 +8,7 @@ public interface UserAuthInterface {
     public User createUser(User user);
     public void getUsers(UserListCallback callback);
     public void getUserCount(IntCallback callback);
+    public void updateUser(User user);
 //    public void getUser(UserCallback callback);
 
 

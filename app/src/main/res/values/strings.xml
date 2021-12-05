@@ -11,6 +11,7 @@
     <string name="post_menu_wandering_text">Post a wandering dog</string>
     <string name="edit_create_save_text">Save</string>
     <string name="detail_edit_btn">Edit</string>
+    <string name="home_suggested_post_txt">Suggested</string>
     <string name="contacts_contacts_text">Contacts</string>
     <string name="post_detail_connect_btn">Connect</string>
     <string name="post_detail_message_btn">Chat</string>
@@ -27,4 +28,21 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="edit_edit_btn">Edit</string>
+
+
+
+    <string name="edit_create_description">"Say something "</string>
+    <string name="channel_name">channel Name</string>
+    <string name="channel_description">channel description</string>
+
+
+=======
+>>>>>>> parent of 017fd8e (some fixes)
+=======
+>>>>>>> parent of 017fd8e (some fixes)
+=======
+>>>>>>> parent of 017fd8e (some fixes)
+    <string-array name="new_dog_status">
+    <item>Returned</item>
+    </string-array>
 </resources>

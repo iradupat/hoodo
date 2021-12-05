@@ -28,6 +28,7 @@ import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.controller.IntCallback;
 import com.example.hodoo.controller.PostInterface;
 import com.example.hodoo.controller.PostListCallBack;
+import com.example.hodoo.controller.PostSuggestionInterface;
 import com.example.hodoo.controller.StoreUserInterface;
 import com.example.hodoo.controller.UserAuthInterface;
 import com.example.hodoo.controller.firebase.FireBaseController;
@@ -54,12 +55,13 @@ import java.util.Locale;
  *
  */
 public class MainActivity extends AppCompatActivity {
-    private TextView profileBtn;
+    private TextView profileBtn, allButton, suggestedBtn;
     private Button createPostBtn, messagesBtn, signOutBtn;
     private PostInterface controller;
     private UserAuthInterface userController;
     private StoreUserInterface roomDbStoreUser;
     private RoomDB db;
+    private PostSuggestionInterface suggestionInterface;
     private User user;
     private RecyclerView recyclerView;
     private int langCode= 0;
@@ -67,20 +69,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         userController = FactoryController.registerUserController("FIREBASE_DB");
         controller = FactoryController.createPostController("FIREBASE_DB");
         roomDbStoreUser = FactoryController.createStoreUserController("ROOM_DB");
         db = RoomDB.getInstance(this);
-
+        suggestionInterface = FactoryController.createPostSuggestionController("FIREBASE_DB");
 
         // create user or load user ID
         loadUserData();
 
+        setContentView(R.layout.activity_main);
+
+
         // load all the posts
 
-        System.out.println(user.getLanguage()+"    \n\n\n    hello  see the language above \n\n "+user.getUserId());
+
 
         controller.getAllPosts(new PostListCallBack() {
 
@@ -93,19 +96,45 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 recyclerView.setAdapter(adapter);
 
-//                for(Post p : posts){
-//
-//                    listPost(p, layout);
-//
-//                }
+
             }
         });
+
+
+
 
 
         ImageView flag = (ImageView)findViewById(R.id.home_lang);
         profileBtn = (TextView) findViewById(R.id.home_profile);
         createPostBtn = (Button) findViewById(R.id.home_create_post);
         messagesBtn = (Button) findViewById(R.id.home_messages);
+        allButton = findViewById(R.id.home_all_posts);
+        suggestedBtn = findViewById(R.id.home_suggested);
+
+        allButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.getAllPosts(new PostListCallBack() {
+
+                    @Override
+                    public void onComplete(List<Post> posts) {
+//                LinearLayout layout = ((LinearLayout)findViewById(R.id.home_list_posts));
+                        displayPosts(posts);
+
+                    }
+                });
+
+            }
+        });
+
+        suggestedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                suggestionInterface.suggestedPosts(posts -> {
+                    displayPosts(posts);
+                }, user);
+            }
+        });
 
         if(user.getLanguage().equals("fr")){
             changeLanguage("fr", flag);
@@ -166,6 +195,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void displayPosts(List<Post> posts) {
+        recyclerView = findViewById(R.id.home_list_posts);
+
+        PostAdapter adapter = new PostAdapter(MainActivity.this,posts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        recyclerView.setAdapter(adapter);
+
+    }
+
 
     public void changeLanguage(String lng, ImageView flag){
 
@@ -213,30 +251,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //    }
 
-    public void listPost(Post post, LinearLayout layoutScroll){
-        try{
-        View layout = getLayoutInflater().inflate(R.layout.dog_card, null, false);
-        ImageView img = layout.findViewById(R.id.dog_card_img);
-        TextView statusText = layout.findViewById(R.id.dog_card_status);
-        TextView descriptionText = layout.findViewById(R.id.dog_card_desc);
-
-        descriptionText.setText(post.toString());
-        statusText.setText(post.getStatus().getString());
-        Glide.with(this).load(post.getImage()).into(img);
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent postDetailsIntent = new Intent(MainActivity.this, PostDetailActivity.class);
-                postDetailsIntent.putExtra("postId", post.getPostId());
-                startActivity(postDetailsIntent);
-            }
-        });
-//        ((LinearLayout)findViewById(R.id.home_list_posts)).addView(layout);
-            layoutScroll.addView(layout);
-        }catch (Exception e){
-
-        }
-    }
+//
 
 
 
