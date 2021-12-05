@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 suggestionInterface.suggestedPosts(posts -> {
+                    Collections.reverse(posts);
                     displayPosts(posts);
                 }, user);
             }
