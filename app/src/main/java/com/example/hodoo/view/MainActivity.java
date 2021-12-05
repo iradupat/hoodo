@@ -1,52 +1,34 @@
 package com.example.hodoo.view;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 
-import com.bumptech.glide.Glide;
 import com.example.hodoo.R;
 import com.example.hodoo.controller.FactoryController;
-import com.example.hodoo.controller.IntCallback;
 import com.example.hodoo.controller.PostInterface;
 import com.example.hodoo.controller.PostListCallBack;
 import com.example.hodoo.controller.PostSuggestionInterface;
 import com.example.hodoo.controller.StoreUserInterface;
 import com.example.hodoo.controller.UserAuthInterface;
-import com.example.hodoo.controller.firebase.FireBaseController;
-import com.example.hodoo.controller.room.RoomController;
 import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.Post;
-import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
 import com.example.hodoo.util.Notification;
-import com.example.hodoo.util.PostBuilder;
-import com.example.hodoo.util.UserLocation;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.hodoo.service.UserLocationService;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -243,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
             user = roomDbStoreUser.getCredentials(db);
             System.out.println("From if :"+user);
         }else{
-            System.out.println(new UserLocation(this).getLocationName());
+            System.out.println(new UserLocationService(this).getLocationName());
 
             // create an account if not
 

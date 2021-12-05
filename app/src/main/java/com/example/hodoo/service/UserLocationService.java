@@ -1,4 +1,4 @@
-package com.example.hodoo.util;
+package com.example.hodoo.service;
 
 import android.Manifest;
 import android.app.Activity;
@@ -27,13 +27,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class UserLocation  extends Service implements LocationListener {
+public class UserLocationService extends Service implements LocationListener {
     private double longitude = 0.0;
     private double latitude = 0.0;
     private Context mContext;
     protected LocationManager locationManager;
 
-    public UserLocation(Context context) {
+    public UserLocationService(Context context) {
         mContext = context;
         locationManager = (LocationManager) context
                 .getSystemService(LOCATION_SERVICE);

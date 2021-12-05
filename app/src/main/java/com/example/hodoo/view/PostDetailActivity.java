@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +20,6 @@ import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
-import com.example.hodoo.util.UserLocation;
 
 public class PostDetailActivity  extends AppCompatActivity {
     private TextView editBtn, post_detail_connect, post_detail_message_btn;

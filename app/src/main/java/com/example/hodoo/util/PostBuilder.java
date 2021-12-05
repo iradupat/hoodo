@@ -6,12 +6,11 @@ package com.example.hodoo.util;
  */
 
 import android.content.Context;
-import android.net.Uri;
 
-import com.example.hodoo.controller.IntCallback;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
+import com.example.hodoo.service.UserLocationService;
 
 import java.util.Date;
 
@@ -57,7 +56,7 @@ public class PostBuilder {
 
     public PostBuilder addLocation(Context context){
          // call a class to locate the user here
-        location = new UserLocation(context).getLocationName();
+        location = new UserLocationService(context).getLocationName();
         return this;
     }
 
