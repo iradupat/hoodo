@@ -35,7 +35,7 @@ public class SuggestActivity extends AppCompatActivity {
     private PostSuggestionInterface suggestionInterface;
     private TextView userName, connectBtn;
     private Post thePost;
-    private User  suggestingUser;
+    private User suggestedUser, suggestingUser;
     private Context context;
 
     @Override
@@ -67,12 +67,8 @@ public class SuggestActivity extends AppCompatActivity {
         userAuthInterface.getUsers(new UserListCallback() {
             @Override
             public void onComplete(List<User> users) {
-                // remove yourself first
-//                for (User u:users  ) {
-//                    if(u.getUserId().equals(suggestingUser.getUserId())){
-//                        users.remove(u);
-//                    }
-//                }
+
+
                 RecyclerView recyclerView = findViewById(R.id.connect_recycle);
 
                 UsersAdapter adapter = new UsersAdapter(SuggestActivity.this,users,thePost,suggestingUser);

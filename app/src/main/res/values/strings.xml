@@ -16,9 +16,12 @@
     <string name="post_detail_connect_btn">Connect</string>
     <string name="post_detail_message_btn">Chat</string>
     <string name="edit_edit_btn">Edit</string>
+<<<<<<< HEAD
     <string name="edit_create_description">"Say something "</string>
     <string name="channel_name">channel Name</string>
     <string name="channel_description">channel description</string>
+=======
+>>>>>>> parent of 017fd8e (some fixes)
     <string-array name="new_dog_status">
     <item>Returned</item>
     </string-array>
