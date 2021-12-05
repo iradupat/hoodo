@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.signin);
         userController = FactoryController.registerUserController("FIREBASE_DB");
         controller = FactoryController.createPostController("FIREBASE_DB");
         roomDbStoreUser = FactoryController.createStoreUserController("ROOM_DB");

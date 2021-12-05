@@ -41,7 +41,7 @@ import com.example.hodoo.util.PostBuilder;
 import java.io.ByteArrayOutputStream;
 
 public class CreateEditPostActivity extends AppCompatActivity {
-   private TextView saveBtn, descriptionText;
+   private TextView saveBtn, descriptionText, statusText;
    private  ImageView dogImage;
    private Uri imageUri = null;
 
@@ -59,24 +59,34 @@ public class CreateEditPostActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_create_post_layout);
-
         // initialize data
         postController = FactoryController.createPostController("FIREBASE_DB");
         db = RoomDB.getInstance(this);
         roomUserController = FactoryController.createStoreUserController("ROOM_DB");
-
         user = roomUserController.getCredentials(db);
-
-
         // load extras from intent
         isEdit = (boolean) getIntent().getExtras().get("isEdit");
         chosenStatus = (int)getIntent().getExtras().get("action");
 
+
         saveBtn = findViewById(R.id.edit_create_save_btn);
         dogImage = findViewById(R.id.dogImage);
         descriptionText = findViewById(R.id.edit_create_save_description);
+        statusText = findViewById(R.id.edit_create_post_status_txt);
 
 
+        if (chosenStatus==0){
+            String mystring = getResources().getString(R.string.post_menu_wandering_text);
+            statusText.setText(mystring);
+        }else if(chosenStatus == 1){
+            String mystring = getResources().getString(R.string.post_menu_found_text);
+            statusText.setText(mystring);
+
+        }else if(chosenStatus == 2){
+            String mystring = getResources().getString(R.string.post_menu_missing_text);
+            statusText.setText(mystring);
+
+        }
         dogImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,7 +109,7 @@ public class CreateEditPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isEdit){
-                    editPost();
+
                 }else {
                     createPost();
                 }
@@ -107,22 +117,9 @@ public class CreateEditPostActivity extends AppCompatActivity {
         });
 
 
-        if(isEdit){
 
-            String postId= getIntent().getExtras().get("postId").toString();
 
-            postController.getPost(new PostCallback() {
-                @Override
-                public void onComplete(Post post) {
-                    Glide.with(CreateEditPostActivity.this).load(post.getImage()).into(dogImage);
-                    dogImage.setImageURI(Uri.parse(post.getImage()));
-                    descriptionText.setText((CharSequence) post.getDescription());
-                    postEdit = post;
-//                    Toast.makeText(CreateEditPostActivity.this,"Yes it is here", Toast.LENGTH_LONG).show();
-                }
-            }, postId);
 
-        }
     }
 
     private void useCamera(){
@@ -172,51 +169,6 @@ public class CreateEditPostActivity extends AppCompatActivity {
         }
     }
 
-    public void editPost(){
-//        String path = dogImage.getTag().toString();
-//        imageUri = Uri.parse(path);
-
-//        if(imageUri==null){
-//            Toast.makeText(this,"Take a picture of the dog first!", Toast.LENGTH_LONG).show();
-//            return;
-//        }
-
-        if(chosenStatus == 0){
-
-            postEdit.setStatus(PostStatus.SEEN);
-
-        }else if(chosenStatus == 1){
-            postEdit.setStatus(PostStatus.FOUND);
-        }else if(chosenStatus == 2){
-            postEdit.setStatus(PostStatus.LOST);
-        }
-
-        isEdit = false;
-        if(imageUri==null){
-            postController.updatePost(postEdit);
-        }else {
-            new FirebaseStorageUtil().uploadImage(new ImageCallback() {
-                @Override
-                public void onImageUploaded(String url) {
-                    postEdit.setImage(url);
-//                    postController.updatePost(postEdit);
-                }
-            }, imageUri, CreateEditPostActivity.this);
-        }
-
-
-
-        Intent postDetailIntent = new Intent(CreateEditPostActivity.this, MainActivity.class);
-        startActivity(postDetailIntent);
-
-
-
-
-
-
-
-
-    }
 
     public void createPost(){
 

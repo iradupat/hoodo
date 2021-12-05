@@ -12,7 +12,7 @@
     <string name="edit_create_save_text">Eregistre</string>
     <string name="detail_edit_btn" />
     <string name="home_suggested_post_txt">Suggestion</string>
-
+    <string name="edit_create_description">Exprimez vouz</string>
     <string name="contacts_contacts_text">Contactes</string>
     <string name="post_detail_connect_btn">Connecter</string>
     <string name="post_detail_message_btn">Discutter</string>
