@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Hoodo</string>
-    <string name="home_profile">Profile</string>
+    <string name="home_profile">Profil</string>
     <string name="home_create_post_txt">Publier</string>
     <string name="home_messages">Messages</string>
-    <string name="home_search">Search</string>
+    <string name="home_search">Chercher</string>
     <string name="home_all_posts_txt">Publications</string>
     <string name="profile_save">Eregistre</string>
     <string name="post_menu_missing_text">Chien disparu</string>
