@@ -218,7 +218,7 @@ System.out.println("*****Friend id "+friendid);
         reference.child("Chats").push().setValue(hashMap);
 
 
-        final DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Chatslist").child(myid).child(friendid);
+        final DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Chatlist").child(myid).child(friendid);
 
         reference1.addValueEventListener(new ValueEventListener() {
             @Override

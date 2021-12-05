@@ -38,7 +38,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
     String friendid;
     String thelastmessage;
-    FirebaseUser firebaseUser;
 
     public UserAdapter(Context context, List<User> userlist, boolean isChat) {
         this.context = context;
@@ -70,17 +69,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
 
 
-        if (isChat) {
-
-            holder.image_on.setVisibility(View.VISIBLE);
-            holder.image_off.setVisibility(View.GONE);
-
-        } else {
-
-            holder.image_on.setVisibility(View.GONE);
-            holder.image_off.setVisibility(View.GONE);
-
-        }
+//        if (isChat) {
+//            holder.image_on.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.image_on.setVisibility(View.GONE);
+//        }
+        holder.image_on.setVisibility(View.GONE);
+        holder.image_off.setVisibility(View.GONE);
 
         if (isChat) {
 
@@ -125,6 +120,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
             friendid = user.getUserId();
 
+            // send message to a user
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("friendid", friendid);
             context.startActivity(intent);
@@ -138,8 +134,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
         thelastmessage = "default";
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -150,7 +144,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
                     Chat chat = ds.getValue(Chat.class);
 
-                    if (firebaseUser!=null &&  chat!=null) {
+                    if (currentUser!=null &&  chat!=null) {
 
 
                         if (chat.getSender().equals(friendid) && chat.getReceiver().equals(currentUser.getUserId()) ||

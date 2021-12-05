@@ -16,6 +16,7 @@ import com.example.hodoo.adapter.UserAdapter;
 import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.controller.UserAuthInterface;
 import com.example.hodoo.dao.RoomDB;
+import com.example.hodoo.model.Chatlist;
 import com.example.hodoo.model.User;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +32,8 @@ import java.util.List;
 public class ChatListFragment extends Fragment {
 
     RecyclerView recyclerView;
-    List<User> usersList;
+    List<User> users;
+    List<Chatlist> usersList;
     UserAdapter mAdapter;
     private User currentUser;
     private RoomDB roomDB;
@@ -49,6 +51,7 @@ public class ChatListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        usersList = new ArrayList<>();
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat_list, container, false);
         recyclerView = view.findViewById(R.id.chat_recyclerview_chatfrag);
@@ -65,47 +68,82 @@ public class ChatListFragment extends Fragment {
         usersList = new ArrayList<>();
 
 
-        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference().child("Hoodo").child("users_two");
+        DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("Chatlist").child(currentUser.getUserId());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 usersList.clear();
-
                 for (DataSnapshot ds: snapshot.getChildren()) {
+                    Chatlist chatlist = ds.getValue(Chatlist.class);
 
-                    User user = ds.getValue(User.class);
-
-                    if (!user.getUserId().equals(currentUser.getUserId())) {
-
-
-                        usersList.add(user);
-
-                    }
-
-
-                    mAdapter  = new UserAdapter(getContext(), usersList, false);
-                    recyclerView.setAdapter(mAdapter);
-
-
-
-
-
-
-
+                    usersList.add(chatlist);
 
                 }
+
+                ChatsListings();
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                System.out.println("From Chat : "+error);
+
             }
         });
 
 
 
+
+
+
+    }
+
+    private void ChatsListings() {
+
+        users = new ArrayList<>();
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Hoodo").child("users_two");
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                users.clear();
+
+                for (DataSnapshot ds: snapshot.getChildren()) {
+
+                    User user = ds.getValue(User.class);
+
+                    for (Chatlist chatlist: usersList) {
+
+
+                        if (user.getUserId().equals(chatlist.getId())) {
+
+
+                            users.add(user);
+
+                        }
+
+
+
+
+                    }
+
+
+                }
+
+                mAdapter = new UserAdapter(getContext(), users, true);
+                recyclerView.setAdapter(mAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
 

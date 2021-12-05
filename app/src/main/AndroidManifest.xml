@@ -17,6 +17,7 @@
         android:theme="@style/Theme.Hodoo">
         <activity
             android:name=".view.MessageActivity"
+            android:parentActivityName=".view.ContactListActivity"
             android:exported="false"
             android:label="@string/title_activity_message"
             android:theme="@style/Theme.Hodoo.NoActionBar" />
@@ -26,6 +27,7 @@
         <activity android:name=".view.CreateEditPostActivity" />
         <activity
             android:name=".view.ContactListActivity"
+            android:parentActivityName=".view.MainActivity"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".view.MainActivity"
