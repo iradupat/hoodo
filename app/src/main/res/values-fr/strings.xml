@@ -11,10 +11,20 @@
     <string name="post_menu_wandering_text">Chien errant</string>
     <string name="edit_create_save_text">Eregistre</string>
     <string name="detail_edit_btn" />
+    <string name="home_suggested_post_txt">Suggestion</string>
+
     <string name="contacts_contacts_text">Contactes</string>
     <string name="post_detail_connect_btn">Connecter</string>
+<<<<<<< HEAD
     <string name="post_detail_message_btn">Chatter</string>
     <string name="channel_name">nom du channel</string>
     <string name="channel_description">description du channel</string>
     <string name="edit_edit_btn" />
+=======
+    <string name="post_detail_message_btn">Discutter</string>
+    <string name="edit_edit_btn"/>
+    <string-array name="new_dog_status">
+        <item>Retournée</item>
+    </string-array>
+>>>>>>> origin/main
 </resources>

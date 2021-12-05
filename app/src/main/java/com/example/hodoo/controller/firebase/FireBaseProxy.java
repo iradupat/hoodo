@@ -46,7 +46,7 @@ public abstract class FireBaseProxy {
                 boolean exist = false;
                 for(DataSnapshot snapshot1: snapshot.getChildren()){
                     PostSuggestion suggestion = snapshot1.getValue(PostSuggestion.class);
-                    if(suggestion.getPost().equals(post) && suggestion.getSuggestedUser().equals(suggestedUser)){
+                    if(suggestion.getPost().getPostId().equals(post.getPostId()) && suggestion.getSuggestedUser().getUserId().equals(suggestedUser.getUserId())){
                         exist = true;
                     }
                 }
@@ -67,12 +67,13 @@ public abstract class FireBaseProxy {
         firebase.getReference().child("Hoodo").child("suggestions").child(id).setValue(suggestion);
 
     }
-    public List<PostSuggestion> suggestedPosts(User user){
+    public List<PostSuggestion>  suggestedPosts(User user){
         DatabaseReference suggestionRef = firebase.getReference().child("Hoodo").child("suggestions");
         List<PostSuggestion> suggestions = new ArrayList<>();
         suggestionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                List<Post> suggestions = new ArrayList<>();
                 for(DataSnapshot snapshot1: snapshot.getChildren()){
                     PostSuggestion suggestion = snapshot1.getValue(PostSuggestion.class);
                     if(suggestion.getSuggestedUser().equals(user)){
@@ -86,8 +87,10 @@ public abstract class FireBaseProxy {
 
             }
         });
-        return suggestions;
+
+        return null;
     }
+
     public void getPostSuggestionCount(IntCallback callback){
         DatabaseReference suggestionRef = firebase.getReference().child("Hoodo").child("suggestions");
 
@@ -253,26 +256,14 @@ public abstract class FireBaseProxy {
         firebase.getReference().child("Hoodo").child("users_two").child(id).setValue(user);
         return user;
     }
+    public void updateUser(User user){
 
+        firebase.getReference().child("Hoodo").child("users_two").child(user.getUserId()).setValue(user);
+    }
     public void updatePost(Post post){
 
-        firebase.getReference().child("Hoodo").child("posts").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshot1: snapshot.getChildren() ) {
-                    Post foundPost = snapshot1.getValue(Post.class);
-                    if(foundPost.getPostId().equals(post.getPostId())){
-                        snapshot1.getRef().removeValue();
-                        addPost(post);
-                    }
-                }
-            }
+        firebase.getReference().child("Hoodo").child("posts").child(post.getPostId()).setValue(post);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     public void getPost(PostCallback callBack, String postId) {
@@ -314,6 +305,7 @@ public abstract class FireBaseProxy {
         firebase = FirebaseDatabase.getInstance();
 
         DatabaseReference postsRef = firebase.getReference().child("Hoodo").child("posts");
+
         postsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -321,9 +313,6 @@ public abstract class FireBaseProxy {
                 for (DataSnapshot snapshot1: snapshot.getChildren()) {
 //                    System.out.println(snapshot1.getKey());
                     Post post = snapshot1.getValue(Post.class);
-//                    if(post.getPostId().endsWith("0") || post.getPostId() == null){
-//                        post.setPostId(snapshot1.getKey());
-//                    }
                     posts.add(post);
                 }
                 callBack.onComplete(posts);
