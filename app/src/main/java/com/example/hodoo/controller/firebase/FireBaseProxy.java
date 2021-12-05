@@ -62,7 +62,9 @@ public abstract class FireBaseProxy {
 
     }
     public void giveSuggestion(PostSuggestion suggestion){
-        firebase.getReference().child("Hoodo").child("suggestions").push().setValue(suggestion);
+        String id = firebase.getReference().child("Hoodo").child("suggestions").push().getKey();
+        suggestion.setSuggestionId(id);
+        firebase.getReference().child("Hoodo").child("suggestions").child(id).setValue(suggestion);
 
     }
     public List<PostSuggestion> suggestedPosts(User user){
@@ -170,7 +172,8 @@ public abstract class FireBaseProxy {
 
     }
     public void createMessage(Message message){
-        firebase.getReference().child("Hoodo").child("messages").push().setValue(message);
+        String id = firebase.getReference().child("Hoodo").child("messages").push().getKey();
+        firebase.getReference().child("Hoodo").child("messages").child(id).setValue(message);
 
     }
 
@@ -223,7 +226,6 @@ public abstract class FireBaseProxy {
     }
     public  void getUsers(UserListCallback callback){
         DatabaseReference userRef = firebase.getReference().child("Hoodo").child("users_two");
-
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -248,7 +250,7 @@ public abstract class FireBaseProxy {
     public User createUser(User user){
         String id = firebase.getReference().child("Hoodo").child("users_two").push().getKey();
         user.setUserId(id);
-        firebase.getReference().child("Hoodo").child("users_two").push().setValue(user);
+        firebase.getReference().child("Hoodo").child("users_two").child(id).setValue(user);
         return user;
     }
 
@@ -338,12 +340,7 @@ public abstract class FireBaseProxy {
     public void addPost(Post post) {
         String id = firebase.getReference().child("Hoodo").child("posts").push().getKey();
         post.setPostId(id);
-        firebase.getReference().child("Hoodo").child("posts").push().setValue(post, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                System.out.println("The ref"+ref);
-            }
-        });
+        firebase.getReference().child("Hoodo").child("posts").child(id).setValue(post);
 
     }
 }

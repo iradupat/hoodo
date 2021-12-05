@@ -32,20 +32,7 @@ public class PostDetailActivity  extends AppCompatActivity {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent gotoEditPostIntent = new Intent(PostDetailActivity.this,CreateEditPostActivity.class);
-                gotoEditPostIntent.putExtra("isEdit", true);
-                gotoEditPostIntent.putExtra("postId", thePost.getPostId());
-                if(thePost.getStatus().equals(PostStatus.SEEN)){
-                        gotoEditPostIntent.putExtra("action",0);
-                }else if(thePost.getStatus().equals(PostStatus.FOUND)){
-                    gotoEditPostIntent.putExtra("action",1);
 
-                }else if(thePost.getStatus().equals(PostStatus.LOST)){
-                    gotoEditPostIntent.putExtra("action",2);
-
-                }else{
-
-                }
 //                startActivity(gotoEditPostIntent);
             }
         });
