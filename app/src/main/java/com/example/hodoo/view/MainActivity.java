@@ -47,6 +47,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -93,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(List<Post> posts) {
 //                LinearLayout layout = ((LinearLayout)findViewById(R.id.home_list_posts));
                 recyclerView = findViewById(R.id.home_list_posts);
-
-                PostAdapter adapter = new PostAdapter(MainActivity.this,posts);
+                Collections.reverse(posts);
+                PostAdapter adapter = new PostAdapter(MainActivity.this, posts);
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 recyclerView.setAdapter(adapter);
 
