@@ -33,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
         editName = findViewById(R.id.profile_edit_name);
         profileName = findViewById(R.id.profile_profile_name);
 
+        userController = FactoryController.registerUserController("FIREBASE_DB");
         roomDbStoreUser = FactoryController.createStoreUserController("ROOM_DB");
         db = RoomDB.getInstance(this);
 
@@ -44,11 +45,14 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(editName.getText().toString().equals("")){
+
                     Toast.makeText(ProfileActivity.this, "Enter a name in the box", Toast.LENGTH_LONG).show();
                 }else{
                     user.setUserName(editName.getText().toString());
                     profileName.setText(user.getUserName());
                     roomDbStoreUser.updateUser(db,user);
+                    userController.updateUser(user);
+
                 }
             }
         });

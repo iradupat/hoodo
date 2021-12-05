@@ -65,8 +65,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecycleHolder>
         public RecycleHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.dog_card_img);
-            statusText = itemView.findViewById(R.id.dog_card_status);
-            descriptionText = itemView.findViewById(R.id.dog_card_desc);
+            statusText = itemView.findViewById(R.id.connect_connect);
+            descriptionText = itemView.findViewById(R.id.connect_username);
         }
     }
 }

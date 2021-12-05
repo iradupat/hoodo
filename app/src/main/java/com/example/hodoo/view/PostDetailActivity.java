@@ -15,13 +15,17 @@ import com.example.hodoo.R;
 import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.controller.PostCallback;
 import com.example.hodoo.controller.PostInterface;
+import com.example.hodoo.controller.StoreUserInterface;
+import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostStatus;
+import com.example.hodoo.model.User;
 import com.example.hodoo.util.UserLocation;
 
 public class PostDetailActivity  extends AppCompatActivity {
-    private TextView editBtn;
+    private TextView editBtn, post_detail_connect;
     private PostInterface controller;
+
     private Post thePost;
 
     @Override
@@ -29,6 +33,20 @@ public class PostDetailActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_detail_layout);
         editBtn = findViewById(R.id.detail_edit_btn);
+        post_detail_connect = findViewById(R.id.post_detail_connect);
+
+
+
+
+        post_detail_connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent goToSuggest = new Intent(PostDetailActivity.this, SuggestActivity.class);
+
+                goToSuggest.putExtra("postId", thePost.getPostId());
+                startActivity(goToSuggest);
+            }
+        });
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

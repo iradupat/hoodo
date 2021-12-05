@@ -24,11 +24,9 @@ public class SuggestionBuilder {
         fireBaseController = new FireBaseController();
     }
 
-    public PostSuggestion buildSuggestion(boolean exist){
+    public PostSuggestion buildSuggestion(){
 
-        if(exist){
-            return null;
-        }
+
         PostSuggestion suggestion = new PostSuggestion(this);
         return suggestion;
 

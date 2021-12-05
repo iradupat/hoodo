@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hodoo">
         <activity android:name=".view.PostDetailActivity"/>
+        <activity android:name=".view.SuggestActivity"/>
         <activity android:name=".view.ProfileActivity"/>
         <activity android:name=".view.PostMenuActivity"/>
         <activity android:name=".view.CreateEditPostActivity"/>

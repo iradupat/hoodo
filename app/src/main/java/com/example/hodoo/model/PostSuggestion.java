@@ -20,6 +20,8 @@ public class PostSuggestion {
         timestamp = builder.getTimestamp();
     }
 
+    public PostSuggestion(){}
+
     public void setSuggestionId(String suggestionId) {
         this.suggestionId = suggestionId;
     }
