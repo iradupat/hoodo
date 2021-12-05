@@ -15,4 +15,8 @@
     <string name="post_detail_connect_btn">Connect</string>
     <string name="post_detail_message_btn">Chat</string>
     <string name="edit_edit_btn">Edit</string>
+    <string-array name="new_dog_status">
+    <item>Returned</item>
+    </string-array>
+
 </resources>

@@ -13,6 +13,9 @@
     <string name="detail_edit_btn" />
     <string name="contacts_contacts_text">Contactes</string>
     <string name="post_detail_connect_btn">Connecter</string>
-    <string name="post_detail_message_btn">Chatter</string>
-    <string name="edit_edit_btn" />
+    <string name="post_detail_message_btn">Discutter</string>
+    <string name="edit_edit_btn"/>
+    <string-array name="new_dog_status">
+        <item>Retournée</item>
+    </string-array>
 </resources>

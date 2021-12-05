@@ -28,14 +28,6 @@ public class PostDetailActivity  extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_detail_layout);
-        editBtn = findViewById(R.id.detail_edit_btn);
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//                startActivity(gotoEditPostIntent);
-            }
-        });
 
 
         controller = FactoryController.createPostController("FIREBASE_DB");
@@ -49,6 +41,22 @@ public class PostDetailActivity  extends AppCompatActivity {
 
             }
         }, postId);
+
+        editBtn = findViewById(R.id.detail_edit_btn);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controller.getPost(new PostCallback() {
+                    @Override
+                    public void onComplete(Post post) {
+                        thePost = post;
+                        updateStatus(post);
+
+                    }
+                }, postId);
+
+            }
+        });
 
     }
 
@@ -71,5 +79,20 @@ public class PostDetailActivity  extends AppCompatActivity {
 
         }
 
+
+    }
+
+    public void updateStatus(Post post){
+        try{
+
+            editBtn = findViewById(R.id.detail_edit_btn);
+            post.setStatus(PostStatus.RETURNED);
+            controller.updatePost(post);
+            editBtn.setText(post.getStatus().toString()+"!");
+
+
+        }catch (Exception e){
+
+        }
     }
 }
