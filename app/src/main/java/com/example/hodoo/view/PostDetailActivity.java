@@ -124,7 +124,7 @@ public class PostDetailActivity  extends AppCompatActivity {
                 editBtn = findViewById(R.id.detail_edit_btn);
                 post.setStatus(PostStatus.RETURNED);
                 controller.updatePost(post);
-                editBtn.setText("DOG "+post.getStatus().toString()+"!");
+                editBtn.setText(" DOG IS "+post.getStatus().toString()+"!");
             }
 
 
