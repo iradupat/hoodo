@@ -67,7 +67,7 @@ public abstract class FireBaseProxy {
         firebase.getReference().child("Hoodo").child("suggestions").child(id).setValue(suggestion);
 
     }
-    public void  suggestedPosts(PostListCallBack callBack, User user){
+    public void suggestedPosts(PostListCallBack callBack, User user){
         DatabaseReference suggestionRef = firebase.getReference().child("Hoodo").child("suggestions");
 
         suggestionRef.addValueEventListener(new ValueEventListener() {
@@ -88,8 +88,8 @@ public abstract class FireBaseProxy {
 
             }
         });
-
     }
+
     public void getPostSuggestionCount(IntCallback callback){
         DatabaseReference suggestionRef = firebase.getReference().child("Hoodo").child("suggestions");
 
