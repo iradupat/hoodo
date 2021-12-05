@@ -108,12 +108,13 @@ public class MainActivity extends AppCompatActivity {
         messagesBtn = (Button) findViewById(R.id.home_messages);
 
         if(user.getLanguage().equals("fr")){
+            changeLanguage("fr", flag);
             int imageResource = getResources().getIdentifier("@drawable/france", null, getPackageName());
 
             Drawable res = getResources().getDrawable(imageResource);
             flag.setImageDrawable(res);
         }else{
-
+            changeLanguage("en", flag);
             int imageResource = getResources().getIdentifier("@drawable/uk", null, getPackageName());
 
             Drawable res = getResources().getDrawable(imageResource);
@@ -131,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
                     changeLanguage("fr", flag);
 
                 }
+                Intent intent = getIntent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                finish();
+                startActivity(intent);
             }
         });
 
@@ -175,17 +180,14 @@ public class MainActivity extends AppCompatActivity {
             Drawable res = getResources().getDrawable(imageResource);
             flag.setImageDrawable(res);
         }
-        roomDbStoreUser.updateUser(db,user.getUserId(), user.getLanguage());
+        roomDbStoreUser.updateUser(db,user);
 //        roomDbStoreUser.storeCredentials(user, db);
         Resources rs = getResources();
         DisplayMetrics met = rs.getDisplayMetrics();
         Configuration conf = rs.getConfiguration();
         conf.setLocale(new Locale(lng.toLowerCase()));
         rs.updateConfiguration(conf, met);
-        Intent intent = getIntent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-        startActivity(intent);
+
     }
 
     public void loadUserData(){

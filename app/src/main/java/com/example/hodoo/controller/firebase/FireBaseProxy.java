@@ -206,7 +206,7 @@ public abstract class FireBaseProxy {
 
     }
     public void getUserCount(IntCallback callback){
-        DatabaseReference userRef = firebase.getReference().child("Hoodo").child("users");
+        DatabaseReference userRef = firebase.getReference().child("Hoodo").child("users_two");
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -222,7 +222,7 @@ public abstract class FireBaseProxy {
 
     }
     public  void getUsers(UserListCallback callback){
-        DatabaseReference userRef = firebase.getReference().child("Hoodo").child("users");
+        DatabaseReference userRef = firebase.getReference().child("Hoodo").child("users_two");
 
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -230,9 +230,6 @@ public abstract class FireBaseProxy {
                 List<User> users = new ArrayList<>();
                 for(DataSnapshot snapshot1 : snapshot.getChildren() ){
                     User user = snapshot1.getValue(User.class);
-                    if(user.getUserId()==null || user.getUserId().endsWith("0")){
-                        user.setUserId(snapshot1.getKey());
-                    }
                     users.add(user);
                 }
                 callback.onComplete(users);
@@ -249,9 +246,9 @@ public abstract class FireBaseProxy {
     }
 
     public User createUser(User user){
-        String id = firebase.getReference().child("Hoodo").child("users").push().getKey();
+        String id = firebase.getReference().child("Hoodo").child("users_two").push().getKey();
         user.setUserId(id);
-        firebase.getReference().child("Hoodo").child("users").push().setValue(user);
+        firebase.getReference().child("Hoodo").child("users_two").push().setValue(user);
         return user;
     }
 

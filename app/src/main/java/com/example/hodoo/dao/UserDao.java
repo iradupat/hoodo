@@ -21,6 +21,6 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     List<User> getAll();
 
-    @Query("UPDATE user SET language = :lang WHERE userId = :userId")
-    void update(String userId, String lang);
+    @Update
+    void update(User user);
 }

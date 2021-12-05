@@ -18,8 +18,8 @@ public abstract class RoomProxy {
         return user;
     }
 
-    public void updateUser(RoomDB db, String userId, String lang){
-        db.userDao().update(userId, lang);
+    public void updateUser(RoomDB db, User user){
+        db.userDao().update(user);
     }
     public boolean checkIfUserExist(RoomDB db){
         List<User> users = db.userDao().getAll();
