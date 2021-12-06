@@ -56,7 +56,7 @@ public class Notification {
 
     // Method to get the custom Design for the display of
     // notification.
-    private static RemoteViews getCustomDesign(String title, String message,Context context) {
+    public static RemoteViews getCustomDesign(String title, String message,Context context) {
         @SuppressLint("RemoteViewLayout") RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification);
         remoteViews.setTextViewText(R.id.title, title);
         remoteViews.setTextViewText(R.id.message, message);
@@ -64,7 +64,7 @@ public class Notification {
         return remoteViews;
     }
 
-    private void createNotificationChannel(Context context, String CHANNEL_ID) {
+    public static void createNotificationChannel(Context context, String CHANNEL_ID) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

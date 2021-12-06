@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        Notification.showNotification(this, "Hello ", "Hello friends");
+
 
         // load all the posts
 
@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         // check if ther is a user in the local DB
         if(roomDbStoreUser.checkIfUserExist(db)){
             user = roomDbStoreUser.getCredentials(db);
+            System.out.println("From if :"+user);
         }else{
             System.out.println(new UserLocation(this).getLocationName());
 

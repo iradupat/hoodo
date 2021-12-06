@@ -3,9 +3,11 @@
     package="com.example.hodoo">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Include only if your app benefits from precise location access. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,13 +15,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Hodoo">
-        <activity android:name=".view.PostDetailActivity"/>
-        <activity android:name=".view.SuggestActivity"/>
-        <activity android:name=".view.ProfileActivity"/>
-        <activity android:name=".view.PostMenuActivity"/>
-        <activity android:name=".view.CreateEditPostActivity"/>
-        <activity android:name=".view.ContactListActivity"/>
-        <activity android:name=".view.MainActivity"/>
+
+        <activity
+            android:name=".view.MessageActivity"
+            android:parentActivityName=".view.ContactListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_message"
+            android:theme="@style/Theme.Hodoo.NoActionBar" />
+        <activity android:name=".view.PostDetailActivity" />
+        <activity android:name=".view.ProfileActivity" />
+        <activity android:name=".view.PostMenuActivity" />
+        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.CreateEditPostActivity" />
+        <activity
+            android:name=".view.ContactListActivity"
+            android:parentActivityName=".view.MainActivity"
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".view.Signin"
             android:exported="true">
@@ -36,6 +47,4 @@
 
     </application>
 
-    <!-- Include only if your app benefits from precise location access. -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>
