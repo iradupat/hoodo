@@ -45,9 +45,8 @@ public class FirebaseStorageUtil {
                 ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        System.out.println(uri);
-                        pd.dismiss();
                         callback.onImageUploaded(uri.toString());
+                        pd.dismiss();
                         Toast.makeText(context, "Post created",Toast.LENGTH_LONG).show();
 
                     }});

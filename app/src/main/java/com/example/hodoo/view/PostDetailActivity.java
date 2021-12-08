@@ -3,9 +3,10 @@ package com.example.hodoo.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,10 +21,9 @@ import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
-import com.example.hodoo.util.UserLocation;
 
 public class PostDetailActivity  extends AppCompatActivity {
-    private TextView editBtn, post_detail_connect;
+    private TextView editBtn, post_detail_connect, post_detail_message_btn;
     private PostInterface controller;
     private User user;
     private RoomDB db;
@@ -36,6 +36,7 @@ public class PostDetailActivity  extends AppCompatActivity {
         setContentView(R.layout.post_detail_layout);
         editBtn = findViewById(R.id.detail_edit_btn);
         post_detail_connect = findViewById(R.id.post_detail_connect);
+
         db = RoomDB.getInstance(this);
         roomUserController = FactoryController.createStoreUserController("ROOM_DB");
         user = roomUserController.getCredentials(db);
@@ -96,12 +97,36 @@ public class PostDetailActivity  extends AppCompatActivity {
             TextView postStatus = findViewById(R.id.post_detail_status);
             TextView postDate = findViewById(R.id.post_detail_date);
             TextView postDescription = findViewById(R.id.post_detail_details_text);
-
+            TextView postLocation = findViewById(R.id.detail_location);
+            post_detail_message_btn = findViewById(R.id.post_detail_message);
+            if(post.getStatus().equals(PostStatus.SEEN)) {
+                postLocation.setText(post.getLocation());
+            }else{
+                postLocation.setText("");
+//                ((ViewGroup)postLocation.getParent()).removeView(postLocation);
+            }
             author.setText(post.getEditor().getUserName());
-            postStatus.setText(post.getStatus().getString());
+            postStatus.setText(post.getStatus().getTranslatedText(user.getLanguage()));
             postDate.setText(post.getFormattedDate());
             postDescription.setText(post.getDescription().toUpperCase());
             Glide.with(this).load(post.getImage()).into(img);
+
+            String postEditorId = thePost.getEditor().getUserId();
+            if(postEditorId.equals(user.getUserId())) {
+                Toast.makeText(PostDetailActivity.this,"You are the owner of this post",Toast.LENGTH_SHORT);
+                post_detail_message_btn.setVisibility(View.GONE);
+            } else {
+                post_detail_message_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // send message to a user
+                        Intent intent = new Intent(PostDetailActivity.this, MessageActivity.class);
+                        intent.putExtra("friendid", postEditorId);
+                        PostDetailActivity.this.startActivity(intent);
+                    }
+                });
+            }
+
 
             if (post.getStatus().equals(PostStatus.RETURNED))
             {

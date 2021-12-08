@@ -10,6 +10,7 @@ public abstract class RoomProxy {
 
 
     public void storeCredentials(User user, RoomDB db){
+
         db.userDao().deleteAll();
         db.userDao().insert(user);
     }

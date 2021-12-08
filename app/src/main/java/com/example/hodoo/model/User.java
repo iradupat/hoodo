@@ -17,13 +17,22 @@ public class User {
     private String userName;
     private String language;
     private String token;
-
+    private boolean notificationOn;
 
 
     public User(){}
     public User(int lastCount){
         userId = IDBuilder.createID(lastCount).buildID();
         userName = NameBuilder.createRandomName().allUpperCase().buildName();
+        notificationOn = true;
+    }
+
+    public boolean isNotificationOn() {
+        return notificationOn;
+    }
+
+    public void setNotificationOn(boolean notificationOn) {
+        this.notificationOn = notificationOn;
     }
 
     public String getToken() {

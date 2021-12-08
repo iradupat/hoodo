@@ -21,10 +21,11 @@ import java.util.List;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecycleHolder> {
     private List<Post> postList;
     private Context context;
-
-    public PostAdapter(Context contextIn, List<Post> posts) {
+    private String lng;
+    public PostAdapter(Context contextIn, List<Post> posts, String lngIn) {
         postList = posts;
         context =  contextIn;
+        lng = lngIn;
     }
 
     @NonNull
@@ -38,7 +39,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.RecycleHolder>
     @Override
     public void onBindViewHolder(@NonNull PostAdapter.RecycleHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.descriptionText.setText(postList.get(position).toString());
-        holder.statusText.setText(postList.get(position).getStatus().getString());
+        holder.statusText.setText(postList.get(position).getStatus().getTranslatedText(lng));
         Glide.with(context).load(postList.get(position).getImage()).into(holder.img);
 
 

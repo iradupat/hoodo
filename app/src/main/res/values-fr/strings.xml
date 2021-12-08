@@ -1,21 +1,21 @@
 <resources>
-    <string name="app_name">Hodoo</string>
+    <string name="app_name">Hoodo</string>
     <string name="home_profile">Profile</string>
     <string name="home_create_post_txt">Publier</string>
     <string name="home_messages">Messages</string>
-    <string name="home_search">Search</string>
+    <string name="home_search">Recherch</string>
     <string name="home_all_posts_txt">Publications</string>
     <string name="profile_save">Eregistre</string>
     <string name="post_menu_missing_text">Chien disparu</string>
-    <string name="post_menu_found_text">Chien retrouve</string>
+    <string name="post_menu_found_text">Chien retrouvé</string>
     <string name="post_menu_wandering_text">Chien errant</string>
     <string name="edit_create_save_text">Eregistre</string>
-    <string name="detail_edit_btn" />
+    <string name="detail_edit_btn" > Chien rendu</string>
     <string name="home_suggested_post_txt">Suggestion</string>
     <string name="contacts_contacts_text">Contactes</string>
     <string name="post_detail_connect_btn">Connecter</string>
-    <string name="channel_name">nom du channel</string>
-    <string name="channel_description">description du channel</string>
+    <string name="channel_name">Nom du channel</string>
+    <string name="channel_description">Description du channel</string>
     <string name="post_detail_message_btn">Discutter</string>
     <string name="edit_edit_btn"/>
     <string-array name="new_dog_status">

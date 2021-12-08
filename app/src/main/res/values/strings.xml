@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hodoo</string>
+    <string name="app_name">Hoodo</string>
     <string name="home_profile">Profile</string>
     <string name="home_create_post_txt">Create Post</string>
     <string name="home_messages">Messages</string>
@@ -10,7 +10,7 @@
     <string name="post_menu_found_text">Post a found dog</string>
     <string name="post_menu_wandering_text">Post a wandering dog</string>
     <string name="edit_create_save_text">Save</string>
-    <string name="detail_edit_btn">Edit</string>
+    <string name="detail_edit_btn">Mark as Returned</string>
     <string name="home_suggested_post_txt">Suggested</string>
     <string name="contacts_contacts_text">Contacts</string>
     <string name="post_detail_connect_btn">Connect</string>

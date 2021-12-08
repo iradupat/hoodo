@@ -1,4 +1,4 @@
-package com.example.hodoo.util;
+package com.example.hodoo.service;
 
 import android.Manifest;
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -27,13 +28,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class UserLocation  extends Service implements LocationListener {
+public class UserLocationService extends Service implements LocationListener {
     private double longitude = 0.0;
     private double latitude = 0.0;
     private Context mContext;
     protected LocationManager locationManager;
 
-    public UserLocation(Context context) {
+    public UserLocationService(Context context) {
         mContext = context;
         locationManager = (LocationManager) context
                 .getSystemService(LOCATION_SERVICE);
@@ -91,7 +92,7 @@ public class UserLocation  extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-
+        System.out.println(location);
     }
 
     @Nullable
@@ -99,4 +100,21 @@ public class UserLocation  extends Service implements LocationListener {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
 }

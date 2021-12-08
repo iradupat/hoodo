@@ -6,12 +6,11 @@ package com.example.hodoo.util;
  */
 
 import android.content.Context;
-import android.net.Uri;
 
-import com.example.hodoo.controller.IntCallback;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
+import com.example.hodoo.service.UserLocationService;
 
 import java.util.Date;
 
@@ -32,9 +31,10 @@ public class PostBuilder {
         this.status =  status;
         this.editor = editor;
         allowComments = true;
+
         timestamp = new Date();
         if(status.equals(PostStatus.SEEN)){
-//            addLocation();
+            location = "";
         }
 
     }
@@ -55,9 +55,16 @@ public class PostBuilder {
        return this;
     }
 
-    public PostBuilder addLocation(Context context){
-         // call a class to locate the user here
-        location = new UserLocation(context).getLocationName();
+    public PostBuilder addLocation(UserLocationService loc){
+        String name = loc.getLocationName();
+        if (name.matches("[0-9].*")){
+            for (int i =1 ; i<name.split(" ").length;i++){
+                location+=" "+name.split(" ")[i];
+            }
+        }else{
+            location = name;
+        }
+
         return this;
     }
 

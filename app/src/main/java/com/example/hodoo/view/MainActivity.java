@@ -5,54 +5,57 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 
-import com.bumptech.glide.Glide;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hodoo.R;
 import com.example.hodoo.controller.FactoryController;
-import com.example.hodoo.controller.IntCallback;
 import com.example.hodoo.controller.PostInterface;
 import com.example.hodoo.controller.PostListCallBack;
 import com.example.hodoo.controller.PostSuggestionInterface;
 import com.example.hodoo.controller.StoreUserInterface;
 import com.example.hodoo.controller.UserAuthInterface;
-import com.example.hodoo.controller.firebase.FireBaseController;
-import com.example.hodoo.controller.room.RoomController;
+import com.example.hodoo.controller.ValueEventCallBack;
 import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.Post;
-import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
+import com.example.hodoo.notifications.NotificationSender;
 import com.example.hodoo.util.Notification;
 import com.example.hodoo.util.PostBuilder;
-import com.example.hodoo.util.UserLocation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.example.hodoo.util.UserLocation;
+
+import com.example.hodoo.service.UserLocationService;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -68,8 +71,10 @@ public class MainActivity extends AppCompatActivity {
     private RoomDB db;
     private PostSuggestionInterface suggestionInterface;
     private User user;
+    private ImageView flag;
     private RecyclerView recyclerView;
     private int langCode= 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +91,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-
+//        new NotificationSender(this).sendNotification();
 
         // load all the posts
-
-
 
         controller.getAllPosts(new PostListCallBack() {
 
@@ -98,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(List<Post> posts) {
 //                LinearLayout layout = ((LinearLayout)findViewById(R.id.home_list_posts));
                 recyclerView = findViewById(R.id.home_list_posts);
-
-                PostAdapter adapter = new PostAdapter(MainActivity.this,posts);
+                Collections.reverse(posts);
+                PostAdapter adapter = new PostAdapter(MainActivity.this, posts, user.getLanguage());
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 recyclerView.setAdapter(adapter);
 
@@ -111,12 +114,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        ImageView flag = (ImageView)findViewById(R.id.home_lang);
+        flag = (ImageView)findViewById(R.id.home_lang);
         profileBtn = (TextView) findViewById(R.id.home_profile);
         createPostBtn = (Button) findViewById(R.id.home_create_post);
         messagesBtn = (Button) findViewById(R.id.home_messages);
         allButton = findViewById(R.id.home_all_posts);
         suggestedBtn = findViewById(R.id.home_suggested);
+
+
+
+
 
         allButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 suggestionInterface.suggestedPosts(posts -> {
+                    Collections.reverse(posts);
                     displayPosts(posts);
                 }, user);
             }
@@ -205,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
     private void displayPosts(List<Post> posts) {
         recyclerView = findViewById(R.id.home_list_posts);
 
-        PostAdapter adapter = new PostAdapter(MainActivity.this,posts);
+        PostAdapter adapter = new PostAdapter(MainActivity.this,posts, user.getLanguage());
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         recyclerView.setAdapter(adapter);
 
@@ -241,25 +249,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadUserData(){
-
-
-
-
-
         // check if ther is a user in the local DB
+
         if(roomDbStoreUser.checkIfUserExist(db)){
             user = roomDbStoreUser.getCredentials(db);
-            System.out.println("From if :"+user);
+//            System.out.println("From if :"+user);
+            new NotificationSender(this).getUpdatedString(new ValueEventCallBack() {
+                @Override
+                public void onComplete(String value) {
+                    user.setToken(value);
+                    userController.updateUser(user);
+                    roomDbStoreUser.updateUser(db, user);
+                }
+            });
+
+
         }else{
-            System.out.println(new UserLocation(this).getLocationName());
+//            System.out.println(new UserLocationService(this).getLocationName());
 
             // create an account if not
 
             user = new User(12);
             user.setLanguage("en");
-            user = userController.createUser(user);
-            roomDbStoreUser.storeCredentials(user, db);
 
+            new NotificationSender(this).getUpdatedString(new ValueEventCallBack() {
+                @Override
+                public void onComplete(String value) {
+                    user.setToken(value);
+                    user = userController.createUser(user);
+                    roomDbStoreUser.storeCredentials(user, db);
+                }
+            });
         }
 
 
@@ -272,6 +292,8 @@ public class MainActivity extends AppCompatActivity {
 //    public void displayPosts(List<Post> posts){
 //
 //    }
+
+
 
 //
 

@@ -4,9 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.hodoo.R;
@@ -34,18 +37,24 @@ import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostStatus;
 import com.example.hodoo.model.User;
+import com.example.hodoo.service.UserLocationService;
 import com.example.hodoo.util.FirebaseStorageUtil;
 import com.example.hodoo.util.ImageCallback;
 import com.example.hodoo.util.PostBuilder;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CreateEditPostActivity extends AppCompatActivity {
    private TextView saveBtn, descriptionText;
    private  ImageView dogImage;
    private Uri imageUri = null;
-
-   private  ActivityResultLauncher<Intent> someActivityResultLauncher;
+private    String currentPhotoPath;
+    private UserLocationService location;
+    private  ActivityResultLauncher<Intent> someActivityResultLauncher;
    private boolean isEdit, afterEdit=false;
    private User user;
    private Post postEdit;
@@ -53,7 +62,7 @@ public class CreateEditPostActivity extends AppCompatActivity {
    private PostInterface postController;
    private StoreUserInterface roomUserController;
    private int chosenStatus;
-
+    private String locationName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,8 +75,8 @@ public class CreateEditPostActivity extends AppCompatActivity {
         roomUserController = FactoryController.createStoreUserController("ROOM_DB");
 
         user = roomUserController.getCredentials(db);
-
-
+        location = new UserLocationService(this);
+        locationName = location.getLocationName();
         // load extras from intent
         isEdit = (boolean) getIntent().getExtras().get("isEdit");
         chosenStatus = (int)getIntent().getExtras().get("action");
@@ -83,13 +92,15 @@ public class CreateEditPostActivity extends AppCompatActivity {
                 if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
                     if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
                             checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-                        String []  permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        String []  permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permissions, 10);
                     }else{
-                        useCamera();
+//                        useCamera();
+                        dispatchTakePictureIntent();
                     }
                 }else{
-                    useCamera();
+//                    useCamera();
+                    dispatchTakePictureIntent();
                 }
 
             }
@@ -98,31 +109,12 @@ public class CreateEditPostActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isEdit){
-                    editPost();
-                }else {
                     createPost();
-                }
             }
         });
 
 
-        if(isEdit){
 
-            String postId= getIntent().getExtras().get("postId").toString();
-
-            postController.getPost(new PostCallback() {
-                @Override
-                public void onComplete(Post post) {
-                    Glide.with(CreateEditPostActivity.this).load(post.getImage()).into(dogImage);
-                    dogImage.setImageURI(Uri.parse(post.getImage()));
-                    descriptionText.setText((CharSequence) post.getDescription());
-                    postEdit = post;
-//                    Toast.makeText(CreateEditPostActivity.this,"Yes it is here", Toast.LENGTH_LONG).show();
-                }
-            }, postId);
-
-        }
     }
 
     private void useCamera(){
@@ -135,13 +127,30 @@ public class CreateEditPostActivity extends AppCompatActivity {
 
     }
 
+
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
             case 10:{
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    useCamera();
+                    dispatchTakePictureIntent();
                 }else{
                      Toast.makeText(CreateEditPostActivity.this,"Permission denied", Toast.LENGTH_LONG).show();
                 }
@@ -158,65 +167,45 @@ public class CreateEditPostActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 20){
-            if(data!=null) {
-                Bitmap img = (Bitmap) data.getExtras().get("data");
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                img.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-                String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), img, "dog", null);
-                imageUri = Uri.parse(path);
+            if(currentPhotoPath!=null) {
+
+                File f = new File(currentPhotoPath);
+                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
+//                dogImage.setImageURI(Uri.fromFile(f));
+                bitmap = getResizedBitmap(bitmap,800);
+                dogImage.setImageBitmap(bitmap);
+
+//                Bitmap img = (Bitmap) data.getExtras().get("data");
+//                dogImage.setImageBitmap(img);
+//                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//                img.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//                String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), img, "dog", null);
+                imageUri = Uri.fromFile(f);
+//                imageUri = Uri.fromParts(path, );
 //                System.out.println(imageUri+" The image is here");
-                dogImage.setImageBitmap(img);
+
+
+//                one technique
+
+//                Bitmap img = (Bitmap) data.getExtras().get("data");
+//                img = getResizedBitmap(img,800);
+//                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//                img.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//                String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), img, "dog", null);
+//                imageUri = Uri.parse(path);
+////                System.out.println(imageUri+" The image is here");
+//                dogImage.setImageBitmap(img);
+
+
             }else{
                 Toast.makeText(CreateEditPostActivity.this,"Could you please pic the DOGOO for us!",Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    public void editPost(){
-//        String path = dogImage.getTag().toString();
-//        imageUri = Uri.parse(path);
-
-//        if(imageUri==null){
-//            Toast.makeText(this,"Take a picture of the dog first!", Toast.LENGTH_LONG).show();
-//            return;
-//        }
-
-        if(chosenStatus == 0){
-
-            postEdit.setStatus(PostStatus.SEEN);
-
-        }else if(chosenStatus == 1){
-            postEdit.setStatus(PostStatus.FOUND);
-        }else if(chosenStatus == 2){
-            postEdit.setStatus(PostStatus.LOST);
-        }
-
-        isEdit = false;
-        if(imageUri==null){
-            postController.updatePost(postEdit);
-        }else {
-            new FirebaseStorageUtil().uploadImage(new ImageCallback() {
-                @Override
-                public void onImageUploaded(String url) {
-                    postEdit.setImage(url);
-//                    postController.updatePost(postEdit);
-                }
-            }, imageUri, CreateEditPostActivity.this);
-        }
 
 
-
-        Intent postDetailIntent = new Intent(CreateEditPostActivity.this, MainActivity.class);
-        startActivity(postDetailIntent);
-
-
-
-
-
-
-
-
-    }
 
     public void createPost(){
 
@@ -227,7 +216,7 @@ public class CreateEditPostActivity extends AppCompatActivity {
 
         if(chosenStatus == 0){
 
-            postEdit = new PostBuilder(imageUri.toString(), PostStatus.SEEN, user).addLocation(CreateEditPostActivity.this)
+            postEdit = new PostBuilder(imageUri.toString(), PostStatus.SEEN, user).addLocation(location)
                     .addPostId(10).addDescription(descriptionText.getText().toString()).buildPost();
 
 
@@ -245,10 +234,55 @@ public class CreateEditPostActivity extends AppCompatActivity {
             public void onImageUploaded(String url) {
                 postEdit.setImage(url);
                 postController.addPost(postEdit);
+                Intent postDetailIntent = new Intent(CreateEditPostActivity.this, MainActivity.class);
+                startActivity(postDetailIntent);
             }
         },imageUri, CreateEditPostActivity.this);
 
-        Intent postDetailIntent = new Intent(CreateEditPostActivity.this, MainActivity.class);
-        startActivity(postDetailIntent);
+
+    }
+
+
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            System.out.println("We are good!");
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, 20);
+            }
+//        }
     }
 }

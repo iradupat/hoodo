@@ -1,12 +1,14 @@
 package com.example.hodoo.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,7 @@ import com.example.hodoo.model.User;
 import com.example.hodoo.util.SuggestionBuilder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SuggestActivity extends AppCompatActivity {
     private StoreUserInterface roomUserController;
@@ -65,12 +68,13 @@ public class SuggestActivity extends AppCompatActivity {
 
     public void listUsers(){
         userAuthInterface.getUsers(new UserListCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(List<User> users) {
 
 
                 RecyclerView recyclerView = findViewById(R.id.connect_recycle);
-
+                users = users.stream().filter(user -> !user.getUserId().equals(thePost.getEditor().getUserId())).collect(Collectors.toList());
                 UsersAdapter adapter = new UsersAdapter(SuggestActivity.this,users,thePost,suggestingUser);
                 recyclerView.setLayoutManager(new LinearLayoutManager(SuggestActivity.this));
                 recyclerView.setAdapter(adapter);

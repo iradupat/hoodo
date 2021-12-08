@@ -15,12 +15,19 @@ import com.example.hodoo.R;
 import com.example.hodoo.controller.BooleanCallBack;
 import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.controller.PostSuggestionInterface;
+import com.example.hodoo.controller.ValueEventCallBack;
 import com.example.hodoo.model.Post;
 import com.example.hodoo.model.PostSuggestion;
 import com.example.hodoo.model.User;
+import com.example.hodoo.notifications.NotificationSender;
 import com.example.hodoo.util.SuggestionBuilder;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder> {
 
@@ -66,6 +73,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
                                 }
                             },post,users.get(position));
                             suggestionInterface.giveSuggestion(suggestion);
+                            Map<String, Object> extra= new HashMap<>();
+                            extra.put("userId", suggestingUser.getUserId());
+                            new NotificationSender(context).sendNotification(suggestion.getSuggestedUser().getToken(), "New suggestion", post.getDescription(), extra);
                             Toast.makeText(context, "Suggestion sent", Toast.LENGTH_LONG).show();
                         }
                     });
@@ -75,6 +85,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
 
 
     }
+
+
+
 
     @Override
     public int getItemCount() {

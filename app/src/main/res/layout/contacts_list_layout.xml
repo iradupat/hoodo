@@ -20,7 +20,7 @@
             android:id="@+id/toolbarmain"
             android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/CardView"
-            android:background="@color/purple_500">
+            android:background="#A88888">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="30dp"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tablayout"
-            android:background="@color/purple_500"
+            android:background="#A88888"
             app:tabSelectedTextColor="@android:color/white"
             app:tabIndicator="@android:color/white"
             app:tabTextColor="@android:color/white"/>
