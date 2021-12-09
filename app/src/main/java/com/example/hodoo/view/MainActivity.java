@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(List<Post> posts) {
 //                LinearLayout layout = ((LinearLayout)findViewById(R.id.home_list_posts));
+
                 recyclerView = findViewById(R.id.home_list_posts);
                 Collections.reverse(posts);
                 PostAdapter adapter = new PostAdapter(MainActivity.this, posts, user.getLanguage());
