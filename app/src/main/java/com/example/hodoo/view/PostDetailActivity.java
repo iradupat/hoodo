@@ -112,6 +112,7 @@ public class PostDetailActivity  extends AppCompatActivity {
             Glide.with(this).load(post.getImage()).into(img);
 
             String postEditorId = thePost.getEditor().getUserId();
+            String postEditorToken = thePost.getEditor().getToken();
             if(postEditorId.equals(user.getUserId())) {
                 Toast.makeText(PostDetailActivity.this,"You are the owner of this post",Toast.LENGTH_SHORT);
                 post_detail_message_btn.setVisibility(View.GONE);
@@ -122,6 +123,7 @@ public class PostDetailActivity  extends AppCompatActivity {
                         // send message to a user
                         Intent intent = new Intent(PostDetailActivity.this, MessageActivity.class);
                         intent.putExtra("friendid", postEditorId);
+                        intent.putExtra("friendtoken", postEditorToken);
                         PostDetailActivity.this.startActivity(intent);
                     }
                 });

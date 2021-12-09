@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.example.hodoo.controller.FactoryController;
 import com.example.hodoo.dao.RoomDB;
 import com.example.hodoo.model.Chat;
 import com.example.hodoo.model.User;
+import com.example.hodoo.notifications.NotificationSender;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,25 +32,26 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MessageActivity extends AppCompatActivity {
 
-    String friendid, message, myid;
-    CircleImageView imageViewOnToolbar;
-    TextView usernameonToolbar;
-    Toolbar toolbar;
+    private String friendid, message, myid, friendToken, userName;
+    private CircleImageView imageViewOnToolbar;
+    private TextView usernameonToolbar;
+    private Toolbar toolbar;
 
-    EditText et_message;
-    Button send;
+    private EditText et_message;
+    private Button send;
 
-    DatabaseReference reference;
+    private DatabaseReference reference;
 
-    List<Chat> chatsList;
-    MessageAdapter messageAdapter;
-    RecyclerView recyclerView;
+    private List<Chat> chatsList;
+    private MessageAdapter messageAdapter;
+    private RecyclerView recyclerView;
     private RoomDB roomDB;
     private User currentUser;
 
@@ -75,9 +78,10 @@ public class MessageActivity extends AppCompatActivity {
         send = findViewById(R.id.send_messsage_btn);
         et_message = findViewById(R.id.edit_message_text);
         myid = currentUser.getUserId();
+        userName = currentUser.getUserName();
 
         friendid = getIntent().getStringExtra("friendid"); // retreive the friendid when we click on the item
-
+        friendToken = getIntent().getStringExtra("friendtoken");
 System.out.println("*****Friend id "+friendid);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Hoodo").child("users_two").child(friendid);
 
@@ -152,7 +156,7 @@ System.out.println("*****Friend id "+friendid);
 
                 message = et_message.getText().toString();
 
-                sendMessage(myid, friendid, message);
+                sendMessage(myid, friendid, friendToken, userName, message);
 
                 et_message.setText(" ");
 
@@ -203,8 +207,13 @@ System.out.println("*****Friend id "+friendid);
 
     }
 
-    private void sendMessage(final String myid, final String friendid, final String message) {
+    private void sendMessage(final String myid, final String friendid, final String friendToken, final String userName, final String message) {
 
+        // notification
+        Map<String, Object> extra= new HashMap<>();
+        extra.put("userId", myid);
+        new NotificationSender(MessageActivity.this).sendNotification(friendToken, "New message from: "+ userName, message, extra);
+        Toast.makeText(MessageActivity.this, "Message sent", Toast.LENGTH_LONG).show();
 
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 

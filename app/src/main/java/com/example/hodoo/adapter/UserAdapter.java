@@ -123,6 +123,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
             // send message to a user
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("friendid", friendid);
+            intent.putExtra("friendtoken", user.getToken());
             context.startActivity(intent);
 
 
